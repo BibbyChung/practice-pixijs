@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host --port=4200",
-    "build": "vite build",
+    "build": "vite build --base=/practice-pixijs/",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
@@ -19,6 +20,7 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
+    "gh-pages": "^6.1.1",
     "pixi.js": "^8.1.1"
   }
 }
