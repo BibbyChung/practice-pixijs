@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "gh-pages": "^6.1.1",
+    "miniplex": "^2.0.0",
     "pixi.js": "^8.1.1"
   }
 }
