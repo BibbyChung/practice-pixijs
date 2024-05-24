@@ -2,14 +2,18 @@
   import { onMount } from "svelte";
   import { ButtonEntity } from "./lib/entities/button-entity";
   import { TextEntity } from "./lib/entities/text-entity";
-  import { getGameSystem } from "./lib/game-system";
+  import { getGameEngine } from "./lib/game-engine";
   import { setPixiRoot } from "./lib/pixi";
+  import { RootContainerEntity } from "./lib/entities/root-container-entity";
 
   let mainElem: HTMLElement;
 
   onMount(() => {
     setPixiRoot(mainElem).then(() => {
-      const world = getGameSystem();
+      const world = getGameEngine();
+
+      const rootContainer01 = new RootContainerEntity();
+      world.addEntity(rootContainer01);
 
       // 創建一個文字
       const textObj01 = new TextEntity("Hello, Pixi!", {
@@ -17,11 +21,11 @@
         fill: "white",
         align: "center",
       });
-      world.add<TextEntity>(textObj01);
+      world.addEntity(textObj01);
 
       // 創建一個 button
       const button01 = new ButtonEntity();
-      world.add<ButtonEntity>(button01);
+      world.addEntity(button01);
     });
   });
 </script>

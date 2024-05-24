@@ -3,6 +3,7 @@ import { Application } from "pixi.js";
 let _pixi: Application;
 export const setPixiRoot = (elem: HTMLElement) => {
   const app = new Application();
+  (globalThis as any).__PIXI_APP__ = app;
   return app
     .init({
       width: window.innerWidth,

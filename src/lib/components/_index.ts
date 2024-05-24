@@ -1,11 +1,15 @@
 import type { Container, TextString, ObservablePoint } from "pixi.js";
 
-export interface IPixiContainer {
-  pixiContainer: Container | null;
+export enum EnumContainerLabel {
+  none = "none",
+  root = "root",
 }
 
 export interface IInit {
+  ecsEntityId?: number;
   isInited: boolean;
+  parentContainerName: EnumContainerLabel;
+  self: Container | null;
   init(): void | Promise<void>;
 }
 export interface IText {
@@ -13,6 +17,9 @@ export interface IText {
 }
 export interface IPosition {
   position: ObservablePoint | null;
+}
+export interface IContainerLabel {
+  containerLabel: string | null;
 }
 
 export interface IVelocity {
@@ -22,6 +29,11 @@ export interface IVelocity {
   };
 }
 
+export interface IDestroy {
+  isDestroying: boolean;
+  destroy(): void;
+}
+
 export type ComponentType = Partial<
-  IVelocity & IInit & IText & IPosition & IPixiContainer
+  IInit & IDestroy & IContainerLabel & IText & IPosition & IVelocity
 >;

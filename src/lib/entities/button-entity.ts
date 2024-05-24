@@ -1,35 +1,37 @@
 import { Assets, Sprite, type ObservablePoint } from "pixi.js";
 import type { Container, ContainerChild } from "pixi.js";
 import {
-  type IInit,
-  type IPixiContainer,
+  EnumContainerLabel,
   type IPosition,
   type IVelocity,
 } from "./../components/_index";
-import { getGameSystem } from "../game-system";
-export class ButtonEntity
-  implements IInit, IPosition, IVelocity, IPixiContainer
-{
-  private _sp?: Sprite;
-
-  isInited: boolean = false;
-  get position() {
-    return this._sp?.position ?? null;
+import { getGameEngine } from "../game-engine";
+import { BaseEntity } from "./base-entity";
+export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
+  isDestroying: boolean = false;
+  destroy(): void {
+    this.self?.destroy();
   }
+
+  get position() {
+    return (this.self as Sprite)?.position ?? null;
+  }
+
   velocity: { x: number; y: number } = {
     x: 0.1,
     y: 0.2,
   };
-  get pixiContainer(): Container<ContainerChild> {
-    return this._sp!;
-  }
 
+  ecsEntityId?: number;
+  parentContainerName: EnumContainerLabel = EnumContainerLabel.root;
+  self: Container<ContainerChild> | null = null;
+  isInited: boolean = false;
   async init() {
-    const gs = getGameSystem();
+    const gs = getGameEngine();
 
     const texture = await Assets.load("/images/ghost.png");
     const sp = new Sprite(texture);
-    this._sp = sp;
+    this.self = sp;
     sp.position.set(gs.pixiApp.screen.width / 2, gs.pixiApp.screen.height);
     sp.anchor.set(0.5);
 
@@ -37,6 +39,13 @@ export class ButtonEntity
 
     sp.on("pointerdown", (event) => {
       console.log(`pointerdown => ${event.client}`);
+
+      const ee = this._ge.miniplexECS.entity(this.ecsEntityId ?? 0);
+      if (ee) {
+        this._ge.miniplexECS.update(ee, (e) => {
+          e.isDestroying = true;
+        });
+      }
     });
   }
 }
