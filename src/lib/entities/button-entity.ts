@@ -28,9 +28,7 @@ export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
   isInited: boolean = false;
   async init() {
     const gs = getGameEngine();
-    const assets = gs.pixiAsssets.getLoadScreenAssets();
-
-    const sp = Sprite.from(assets!.ghost);
+    const sp = Sprite.from(gs.loadScreenAssets.ghost);
     this.self = sp;
     sp.position.set(
       gs.pixiApp.screen.width / 2,

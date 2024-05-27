@@ -13,7 +13,6 @@
     await initGameEngine(mainElem, _w);
 
     const world = getGameEngine();
-    await world.pixiAsssets.setLoadScreenAssetsBundle();
 
     const rootContainer01 = new RootContainerEntity();
     world.addEntity(rootContainer01);

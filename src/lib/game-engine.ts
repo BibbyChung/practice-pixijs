@@ -3,7 +3,11 @@ import { Assets } from "pixi.js";
 import manifest from "../assets/manifest.json";
 import type { ComponentType } from "./components/_index";
 import { getPixi, setPixiRoot } from "./pixi-application";
-import { PixiAssets } from "./pixi-assets";
+import {
+  getGameScreenAssets,
+  getLoadScreenAssets,
+  setLoadScreenAssetsBundle,
+} from "./pixi-assets";
 import { DestroySystem } from "./systems/destroy-system";
 import { InitSystem } from "./systems/init-system";
 import { MoveupSystem } from "./systems/moveup-system";
@@ -12,18 +16,22 @@ export type WindowType = Window & typeof globalThis;
 
 class GameEngine {
   pixiApp = getPixi();
-  pixiAsssets = new PixiAssets();
   miniplexECS = new World<ComponentType>();
-
-  constructor(private w: WindowType) {
-    (globalThis as any).__PIXI_APP__ = this.pixiApp;
+  get loadScreenAssets() {
+    return getLoadScreenAssets();
   }
-
+  get gameScreenAssets() {
+    return getGameScreenAssets();
+  }
   get screenWitdh() {
     return this.w.innerWidth;
   }
   get screenHeight() {
     return this.w.innerHeight;
+  }
+
+  constructor(private w: WindowType) {
+    (globalThis as any).__PIXI_APP__ = this.pixiApp;
   }
 
   initSystems() {
@@ -46,6 +54,7 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   await setPixiRoot(elem, w);
   _gameSystem = new GameEngine(w);
   _gameSystem.initSystems();
+  await setLoadScreenAssetsBundle();
 };
 export const getGameEngine = () => {
   return _gameSystem;
