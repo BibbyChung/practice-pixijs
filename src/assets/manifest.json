@@ -1,0 +1,22 @@
+{
+  "bundles": [
+    {
+      "name": "load-screen",
+      "assets": [
+        {
+          "alias": "ghost",
+          "src": "/images/ghost.{png, webp}"
+        }
+      ]
+    },
+    {
+      "name": "game-screen",
+      "assets": [
+        {
+          "alias": "sonic",
+          "src": "/images/sonic.png"
+        }
+      ]
+    }
+  ]
+}

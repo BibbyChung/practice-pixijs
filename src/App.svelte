@@ -3,14 +3,15 @@
   import { ButtonEntity } from "./lib/entities/button-entity";
   import { TextEntity } from "./lib/entities/text-entity";
   import { getGameEngine } from "./lib/game-engine";
-  import { setPixiRoot } from "./lib/pixi";
+  import { setPixiRoot } from "./lib/pixi-application";
   import { RootContainerEntity } from "./lib/entities/root-container-entity";
 
   let mainElem: HTMLElement;
 
   onMount(() => {
-    setPixiRoot(mainElem).then(() => {
-      const world = getGameEngine();
+    setPixiRoot(mainElem).then(async () => {
+      const world = await getGameEngine();
+      await world.pixiAsssets.setLoadScreenAssetsBundle();
 
       const rootContainer01 = new RootContainerEntity();
       world.addEntity(rootContainer01);

@@ -1,11 +1,11 @@
-import { Assets, Sprite } from "pixi.js";
 import type { Container, ContainerChild } from "pixi.js";
+import { Sprite } from "pixi.js";
+import { getGameEngine } from "../game-engine";
 import {
   EnumContainerLabel,
   type IPosition,
   type IVelocity,
 } from "./../components/_index";
-import { getGameEngine } from "../game-engine";
 import { BaseEntity } from "./base-entity";
 export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
   isDestroying: boolean = false;
@@ -28,9 +28,9 @@ export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
   isInited: boolean = false;
   async init() {
     const gs = getGameEngine();
+    const assets = gs.pixiAsssets.getLoadScreenAssets();
 
-    const texture = await Assets.load("/images/ghost.png");
-    const sp = new Sprite(texture);
+    const sp = Sprite.from(assets!.ghost);
     this.self = sp;
     sp.position.set(gs.pixiApp.screen.width / 2, gs.pixiApp.screen.height);
     sp.anchor.set(0.5);

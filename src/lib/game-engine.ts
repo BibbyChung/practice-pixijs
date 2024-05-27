@@ -1,15 +1,20 @@
 import { World } from "miniplex";
+import { Assets } from "pixi.js";
+import manifest from "../assets/manifest.json";
 import type { ComponentType } from "./components/_index";
-import { getPixi } from "./pixi";
+import { getPixi } from "./pixi-application";
+import { PixiAssets } from "./pixi-assets";
+import { DestroySystem } from "./systems/destroy-system";
 import { InitSystem } from "./systems/init-system";
 import { MoveupSystem } from "./systems/moveup-system";
-import { DestroySystem } from "./systems/destroy-system";
 
 class GameEngine {
   pixiApp = getPixi();
+  pixiAsssets = new PixiAssets();
   miniplexECS = new World<ComponentType>();
 
   initSystems() {
+    Assets.init({ manifest });
     [InitSystem, MoveupSystem, DestroySystem].forEach((system) => {
       const obj = new system();
       obj.init();
