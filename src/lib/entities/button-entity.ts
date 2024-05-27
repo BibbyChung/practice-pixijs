@@ -1,4 +1,4 @@
-import { Assets, Sprite, type ObservablePoint } from "pixi.js";
+import { Assets, Sprite } from "pixi.js";
 import type { Container, ContainerChild } from "pixi.js";
 import {
   EnumContainerLabel,
@@ -18,8 +18,8 @@ export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
   }
 
   velocity: { x: number; y: number } = {
-    x: 0.1,
-    y: 0.2,
+    x: 1,
+    y: 2,
   };
 
   ecsEntityId?: number;
@@ -34,7 +34,7 @@ export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
     this.self = sp;
     sp.position.set(gs.pixiApp.screen.width / 2, gs.pixiApp.screen.height);
     sp.anchor.set(0.5);
-
+    sp.scale.set(0.3, 0.3);
     sp.interactive = true;
 
     sp.on("pointerdown", (event) => {

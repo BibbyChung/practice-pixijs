@@ -8,6 +8,7 @@ export abstract class BaseEntity implements IInit, IDestroy {
   abstract ecsEntityId?: number;
   abstract isInited: boolean;
   abstract parentContainerName: EnumContainerLabel;
+  zIndex = 10;
   abstract self: Container<ContainerChild> | null;
   abstract init(): void | Promise<void>;
 

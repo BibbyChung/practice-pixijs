@@ -17,6 +17,7 @@ export class TextEntity extends BaseEntity implements IText {
 
   ecsEntityId?: number;
   parentContainerName: EnumContainerLabel = EnumContainerLabel.root;
+  zIndex = 20;
   self: Container<ContainerChild> | null = null;
   isInited: boolean = false;
   init(): void | Promise<void> {

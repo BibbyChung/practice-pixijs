@@ -9,6 +9,7 @@ export interface IInit {
   ecsEntityId?: number;
   isInited: boolean;
   parentContainerName: EnumContainerLabel;
+  zIndex: number; // 數字越大放置越上層
   self: Container | null;
   init(): void | Promise<void>;
 }

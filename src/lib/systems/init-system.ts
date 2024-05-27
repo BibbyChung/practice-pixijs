@@ -22,6 +22,8 @@ export class InitSystem extends BaseSystem {
   private addEntityToPixiContainer(entity: IInit) {
     if (entity.parentContainerName === EnumContainerLabel.none) {
       this._ge.pixiApp.stage.addChild(entity.self!);
+      entity.self!.zIndex = entity.zIndex;
+      this._ge.pixiApp.stage.sortChildren();
     }
 
     if (entity.parentContainerName === EnumContainerLabel.root) {
@@ -29,6 +31,8 @@ export class InitSystem extends BaseSystem {
         .with("containerLabel")
         .where((e) => e.containerLabel === EnumContainerLabel.root).first;
       rootContainerEntity?.self?.addChild(entity.self!);
+      entity.self!.zIndex = entity.zIndex;
+      rootContainerEntity?.self?.sortChildren();
     }
   }
 }
