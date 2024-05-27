@@ -1,21 +1,28 @@
 import { Application } from "pixi.js";
+import type { WindowType } from "./game-engine";
+
+const initGlobalKeyboardEvent = (w: WindowType) => {
+  w.addEventListener("keydown", (k) => {
+    console.log(k.key);
+  });
+};
 
 let _pixi: Application;
-export const setPixiRoot = (elem: HTMLElement) => {
+export const setPixiRoot = (elem: HTMLElement, w: WindowType) => {
   const app = new Application();
-  (globalThis as any).__PIXI_APP__ = app;
   return app
     .init({
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: w.innerWidth,
+      height: w.innerHeight,
       backgroundColor: 0x061626,
-      resolution: window.devicePixelRatio || 1,
+      resolution: w.devicePixelRatio || 1,
       antialias: true,
       autoDensity: true,
     })
     .then(() => {
       _pixi = app;
       elem.appendChild(app.canvas);
+      initGlobalKeyboardEvent(w);
     });
 };
 

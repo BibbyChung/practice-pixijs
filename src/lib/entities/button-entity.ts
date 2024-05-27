@@ -18,8 +18,8 @@ export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
   }
 
   velocity: { x: number; y: number } = {
-    x: 1,
-    y: 2,
+    x: 8,
+    y: 5,
   };
 
   ecsEntityId?: number;
@@ -32,13 +32,16 @@ export class ButtonEntity extends BaseEntity implements IPosition, IVelocity {
 
     const sp = Sprite.from(assets!.ghost);
     this.self = sp;
-    sp.position.set(gs.pixiApp.screen.width / 2, gs.pixiApp.screen.height);
+    sp.position.set(
+      gs.pixiApp.screen.width / 2,
+      gs.pixiApp.screen.height - 100
+    );
     sp.anchor.set(0.5);
     sp.scale.set(0.3, 0.3);
     sp.interactive = true;
 
     sp.on("pointerdown", (event) => {
-      console.log(`pointerdown => ${event.client}`);
+      console.log(`button pointerdown => ${event.client}`);
 
       const ee = this._ge.miniplexECS.entity(this.ecsEntityId ?? 0);
       if (ee) {

@@ -9,6 +9,7 @@ export class DestroySystem extends BaseSystem {
   init(): void {
     this.getQuery().onEntityAdded.subscribe((e) => {
       e.destroy!();
+      e.self = null;
       this._ge.miniplexECS.remove(e);
       console.log("destory...");
     });
