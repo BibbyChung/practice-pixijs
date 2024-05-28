@@ -2,7 +2,7 @@ import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import manifest from "../assets/manifest.json";
 import type { ComponentType } from "./components/_index";
-import { getPixi, setPixiRoot } from "./pixi-application";
+import { getPixiApp, setPixiApp } from "./pixi-application";
 import {
   getGameScreenAssets,
   getLoadScreenAssets,
@@ -15,7 +15,7 @@ import { MoveupSystem } from "./systems/moveup-system";
 export type WindowType = Window & typeof globalThis;
 
 class GameEngine {
-  pixiApp = getPixi();
+  pixiApp = getPixiApp();
   miniplexECS = new World<ComponentType>();
   get loadScreenAssets() {
     return getLoadScreenAssets();
@@ -51,7 +51,7 @@ class GameEngine {
 
 let _gameSystem: GameEngine;
 export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
-  await setPixiRoot(elem, w);
+  await setPixiApp(elem, w);
   _gameSystem = new GameEngine(w);
   _gameSystem.initSystems();
   await setLoadScreenAssetsBundle();

@@ -8,7 +8,7 @@ const initGlobalKeyboardEvent = (w: WindowType) => {
 };
 
 let _pixi: Application;
-export const setPixiRoot = (elem: HTMLElement, w: WindowType) => {
+export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
   const app = new Application();
   return app
     .init({
@@ -26,4 +26,4 @@ export const setPixiRoot = (elem: HTMLElement, w: WindowType) => {
     });
 };
 
-export const getPixi = () => _pixi;
+export const getPixiApp = () => _pixi;
