@@ -26,14 +26,25 @@ export class MoveSystem extends BaseSystem {
           const bX = this._ge.screenWitdh;
           const bY = this._ge.screenHeight;
 
-          if (minX < 0 || maxX > bX) {
+          if (minX < 0) {
+            entity.moveComponent.velocityX = Math.abs(
+              entity.moveComponent.velocityX
+            );
+          }
+          if (maxX > bX) {
             entity.moveComponent.velocityX =
-              entity.moveComponent.velocityX * -1;
+              Math.abs(entity.moveComponent.velocityX) * -1;
           }
 
-          if (minY < 0 || maxY > bY) {
+          if (minY < 0) {
+            entity.moveComponent.velocityY = Math.abs(
+              entity.moveComponent.velocityY
+            );
+          }
+
+          if (maxY > bY) {
             entity.moveComponent.velocityY =
-              entity.moveComponent.velocityY * -1;
+              Math.abs(entity.moveComponent.velocityY) * -1;
           }
 
           const newX =
