@@ -1,3 +1,4 @@
+import type { Ticker } from "pixi.js";
 import { BaseSystem } from "./base-system";
 
 export class MoveSystem extends BaseSystem {
@@ -9,10 +10,10 @@ export class MoveSystem extends BaseSystem {
     this.getQuery().subscribe((entity) => {
       const pixiElem = entity.pixiElem;
       if (pixiElem) {
-        const tickerObj = this._ge.pixiApp.ticker.add((delta) => {
+        const func = (delta: Ticker) => {
           // check for destruction
           if (entity.destroyComponent?.isDestroy ?? false) {
-            tickerObj.stop();
+            this._ge.pixiApp.ticker.remove(func);
             return;
           }
 
@@ -43,7 +44,8 @@ export class MoveSystem extends BaseSystem {
             entity.moveComponent.velocityY * delta.deltaTime;
 
           pixiElem.position.set(newX, newY);
-        });
+        };
+        this._ge.pixiApp.ticker.add(func);
       }
     });
   }
