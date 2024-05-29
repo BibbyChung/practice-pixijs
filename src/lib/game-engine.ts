@@ -2,7 +2,7 @@ import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import manifest from "../assets/manifest.json";
 import type { WindowType } from "./common/utils";
-import type { ComponentType } from "./components/_index";
+import type { ComponentType } from "./components/base-component";
 import type { BaseEntity } from "./entities/base-entity";
 import { getPixiApp, setPixiApp } from "./pixi-application";
 import {

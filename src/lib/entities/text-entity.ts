@@ -1,4 +1,7 @@
 import { Text, type TextStyle, type TextStyleOptions } from "pixi.js";
+import { EnumContainerLabel } from "../common/utils";
+import { CreateComponent } from "../components/create-component";
+import { PlacementComponent } from "../components/placement-component";
 import { BaseEntity } from "./base-entity";
 
 export class TextEntity extends BaseEntity {
@@ -26,3 +29,15 @@ export class TextEntity extends BaseEntity {
     this.pixiElem = t;
   }
 }
+
+export const getTextEntity = () => {
+  const ee = new TextEntity("Hello, Pixi!", {
+    fontSize: 48,
+    fill: "white",
+    align: "center",
+  });
+  return Object.assign(ee, {
+    createComponent: new CreateComponent(ee),
+    placementComponent: new PlacementComponent(ee, EnumContainerLabel.root, 20),
+  });
+};
