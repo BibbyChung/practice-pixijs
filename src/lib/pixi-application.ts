@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import type { WindowType } from "./game-engine";
+import type { WindowType } from "./common/utils";
 
 const initGlobalKeyboardEvent = (w: WindowType) => {
   w.addEventListener("keydown", (k) => {

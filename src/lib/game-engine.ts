@@ -1,18 +1,19 @@
 import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import manifest from "../assets/manifest.json";
+import type { WindowType } from "./common/utils";
 import type { ComponentType } from "./components/_index";
+import type { BaseEntity } from "./entities/base-entity";
 import { getPixiApp, setPixiApp } from "./pixi-application";
 import {
   getGameScreenAssets,
   getLoadScreenAssets,
   setLoadScreenAssetsBundle,
 } from "./pixi-assets";
+import { CreateSystem } from "./systems/create-system";
 import { DestroySystem } from "./systems/destroy-system";
-import { InitSystem } from "./systems/init-system";
-import { MoveupSystem } from "./systems/moveup-system";
-
-export type WindowType = Window & typeof globalThis;
+import { MoveSystem } from "./systems/move-system";
+import { PlacementSystem } from "./systems/placement-system";
 
 class GameEngine {
   pixiApp = getPixiApp();
@@ -36,16 +37,30 @@ class GameEngine {
 
   initSystems() {
     Assets.init({ manifest });
-    [InitSystem, MoveupSystem, DestroySystem].forEach((system) => {
+    [
+      //
+      CreateSystem,
+      PlacementSystem,
+      DestroySystem,
+      MoveSystem,
+    ].forEach((system) => {
       const obj = new system();
-      obj.init();
+      obj.execute();
     });
   }
 
-  addEntity(entity: ComponentType) {
+  addEntity(entity: BaseEntity & ComponentType) {
     const ee = this.miniplexECS.add(entity);
     const id = this.miniplexECS.id(ee);
-    entity.ecsEntityId = id;
+    (entity as BaseEntity).ecsEntityId = id;
+  }
+
+  addComponent(
+    entity: ComponentType,
+    propKey: keyof ComponentType,
+    component: ComponentType[keyof ComponentType]
+  ) {
+    this.miniplexECS.addComponent(entity, propKey, component);
   }
 }
 

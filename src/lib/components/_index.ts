@@ -1,40 +1,15 @@
-import type { Container, TextString, ObservablePoint } from "pixi.js";
+import type { BaseEntity } from "../entities/base-entity";
+import type { ContainerComponent } from "./container-component";
+import type { CreateComponent } from "./create-component";
+import type { DestroyComponent } from "./destroy-component";
+import type { MoveComponent } from "./move-component";
+import type { PlacementComponent } from "./placement-component";
 
-export enum EnumContainerLabel {
-  none = "none",
-  root = "root",
-}
-
-export interface IInit {
-  ecsEntityId?: number;
-  isInited: boolean;
-  parentContainerName: EnumContainerLabel;
-  zIndex: number; // 數字越大放置越上層
-  self: Container | null;
-  init(): void | Promise<void>;
-}
-export interface IText {
-  text: TextString | null;
-}
-export interface IPosition {
-  position: ObservablePoint | null;
-}
-export interface IContainerLabel {
-  containerLabel: string | null;
-}
-
-export interface IVelocity {
-  velocity: {
-    x: number;
-    y: number;
-  };
-}
-
-export interface IDestroy {
-  isDestroying: boolean;
-  destroy(): void;
-}
-
-export type ComponentType = Partial<
-  IInit & IDestroy & IContainerLabel & IText & IPosition & IVelocity
->;
+export type ComponentType =
+  | BaseEntity & {
+      createComponent?: CreateComponent;
+      containerComponent?: ContainerComponent;
+      placementComponent?: PlacementComponent;
+      destroyComponent?: DestroyComponent;
+      moveComponent?: MoveComponent;
+    };

@@ -1,17 +1,14 @@
-import type { Container, ContainerChild } from "pixi.js";
-import type { EnumContainerLabel, IDestroy, IInit } from "../components/_index";
+import type { Container } from "pixi.js";
 import { getGameEngine } from "../game-engine";
 
-export abstract class BaseEntity implements IInit, IDestroy {
+export abstract class BaseEntity {
   protected _ge = getGameEngine();
+  pixiElem?: Container;
+  ecsEntityId?: number;
+  label?: string;
 
-  abstract ecsEntityId?: number;
-  abstract isInited: boolean;
-  abstract parentContainerName: EnumContainerLabel;
-  zIndex = 10;
-  abstract self: Container<ContainerChild> | null;
-  abstract init(): void | Promise<void>;
-
-  abstract isDestroying: boolean;
-  abstract destroy(): void;
+  abstract create(): void | Promise<void>;
+  destroy(): void {
+    this.pixiElem?.destroy();
+  }
 }
