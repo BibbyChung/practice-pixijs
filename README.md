@@ -2,8 +2,11 @@
 
 ## practice-pixijs
 
-```js
+```bash
 pnpm add pixi.js
+
+# https://github.com/esengine/g-framework
+pnpm add @esengine/g-framework
 ```
 
 ---

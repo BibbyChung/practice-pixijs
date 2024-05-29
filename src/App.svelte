@@ -1,41 +1,28 @@
 <script lang="ts">
-  import { Application, Text } from "pixi.js";
+  import { onMount } from "svelte";
+  import { ContainerComponent } from "./lib/components/container-component";
+  import { InitComponent } from "./lib/components/init-component";
+  import { PositionComponent } from "./lib/components/position-component";
+  import { RootContainerEntity } from "./lib/entities/root-container-entity";
+  import { TextEntity } from "./lib/entities/text-entity";
+  import { getGameEngine, initGameEngine } from "./lib/game-engine";
 
   let mainElem: HTMLElement;
 
-  // 創建 PIXI 應用程式
-  const app = new Application();
-  app
-    .init({
-      width: window.innerWidth,
-      height: window.innerHeight,
-      backgroundColor: 0x061626,
-      resolution: window.devicePixelRatio || 1,
-      antialias: true,
-      autoDensity: true,
-    })
-    .then(() => {
-      // app.renderer.resize(window.innerWidth, window.innerHeight);
-      // 將應用程式添加到 DOM 中
-      mainElem.appendChild(app.canvas);
+  onMount(async () => {
+    const _w = window;
 
-      // 創建一個文字
-      const text = new Text({
-        text: "Hello, Pixi!",
-        anchor: { x: 0.5, y: 0.5 },
-        style: {
-          fontSize: 48,
-          fill: "white",
-          align: "center",
-        },
-      });
+    await initGameEngine(mainElem, _w);
 
-      // 設定文字 position 置中
-      text.position.set(app.screen.width / 2, app.screen.height / 2);
+    const world = getGameEngine();
 
-      // // 將文字添加到應用程式中
-      app.stage.addChild(text);
-    });
+    const rootContainerEntity =
+      world.entityManager.createEntity(RootContainerEntity);
+    rootContainerEntity.addComponent(InitComponent, ContainerComponent);
+
+    const textEntity = world.entityManager.createEntity(TextEntity);
+    textEntity.addComponent(InitComponent, PositionComponent);
+  });
 </script>
 
 <main bind:this={mainElem}></main>

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@esengine/g-framework':
+    specifier: ^1.0.5
+    version: 1.0.5
   gh-pages:
     specifier: ^6.1.1
     version: 6.1.1
@@ -251,6 +254,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@esengine/g-framework@1.0.5:
+    resolution: {integrity: sha512-EUleG06sqYE7hdMfmitYBE983KEKFPY0nhG1xURygcI1WtqxiVQGktLZi1dXtwAB33q7v/2Sc8iomujQJJLPOg==}
+    dev: false
 
   /@jridgewell/gen-mapping@0.3.5:
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
