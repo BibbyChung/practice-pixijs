@@ -1,6 +1,8 @@
 import { Assets, Texture } from "pixi.js";
 
-let _loadScreenAssets: Record<"ghost", Texture>;
+export type assetsKey = "ghost" | "sonic";
+
+let _loadScreenAssets: Record<assetsKey, Texture>;
 export const getLoadScreenAssets = () => {
   if (!_loadScreenAssets) {
     throw new Error(

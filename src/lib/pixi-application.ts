@@ -1,9 +1,25 @@
 import { Application } from "pixi.js";
-import type { WindowType } from "./common/utils";
+import { getRandomInt, type WindowType } from "./common/utils";
+import { getSpriteEntity } from "./entities/sprite-entity";
+import { getGameEngine } from "./game-engine";
 
 const initGlobalKeyboardEvent = (w: WindowType) => {
   w.addEventListener("keydown", (k) => {
     console.log(k.key);
+  });
+  w.addEventListener("mouseup", (event) => {
+    // console.log(event.clientX, event.clientY);
+    // add new ghost entity
+    const ge = getGameEngine();
+    const scale = getRandomInt(5, 20) / 100;
+    const obj = getSpriteEntity(
+      "ghost",
+      scale,
+      scale,
+      event.clientX,
+      event.clientY
+    );
+    ge.addEntityWithComponent(obj.entity, obj.componentKV);
   });
 };
 
