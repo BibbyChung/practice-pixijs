@@ -1,13 +1,12 @@
 import type { EnumContainerLabel } from "../common/utils";
-import type { BaseEntity } from "../entities/base-entity";
-import { BaseComponent } from "./base-component";
+import { BaseComponent, ComponentType } from "./base-component";
 
 export class PlacementComponent extends BaseComponent {
   constructor(
-    protected entity: BaseEntity,
+    protected comp: ComponentType,
     public parentLabel: EnumContainerLabel,
     public zIndex: number
   ) {
-    super(entity);
+    super(comp);
   }
 }

@@ -1,3 +1,4 @@
+import { getComponentKV } from "./../components/base-component";
 import { Text, type TextStyle, type TextStyleOptions } from "pixi.js";
 import { EnumContainerLabel } from "../common/utils";
 import { CreateComponent } from "../components/create-component";
@@ -31,13 +32,22 @@ export class TextEntity extends BaseEntity {
 }
 
 export const getTextEntity = () => {
-  const ee = new TextEntity("Hello, Pixi!", {
+  const entity = new TextEntity("Hello, Pixi!", {
     fontSize: 48,
     fill: "white",
     align: "center",
   });
-  return Object.assign(ee, {
-    createComponent: new CreateComponent(ee),
-    placementComponent: new PlacementComponent(ee, EnumContainerLabel.root, 20),
+  const componentKV = getComponentKV({
+    createComponent: new CreateComponent(entity),
+    placementComponent: new PlacementComponent(
+      entity,
+      EnumContainerLabel.root,
+      20
+    ),
   });
+
+  return {
+    entity,
+    componentKV,
+  };
 };

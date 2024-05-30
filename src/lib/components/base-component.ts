@@ -6,14 +6,20 @@ import type { MoveComponent } from "./move-component";
 import type { PlacementComponent } from "./placement-component";
 
 export abstract class BaseComponent {
-  constructor(protected entity: BaseEntity) {}
+  get entity() {
+    return this.comp as BaseEntity;
+  }
+  constructor(protected comp: ComponentType) {}
 }
 
-export type ComponentType =
-  | BaseEntity & {
-      createComponent?: CreateComponent;
-      containerComponent?: ContainerComponent;
-      placementComponent?: PlacementComponent;
-      destroyComponent?: DestroyComponent;
-      moveComponent?: MoveComponent;
-    };
+export abstract class ComponentType {
+  createComponent?: CreateComponent;
+  containerComponent?: ContainerComponent;
+  placementComponent?: PlacementComponent;
+  destroyComponent?: DestroyComponent;
+  moveComponent?: MoveComponent;
+}
+
+export type ComponentTypeKV = { [K in keyof ComponentType]: ComponentType };
+
+export const getComponentKV = (kv: ComponentType) => kv as ComponentTypeKV;

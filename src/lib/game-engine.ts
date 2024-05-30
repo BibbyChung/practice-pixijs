@@ -2,7 +2,10 @@ import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import manifest from "../assets/manifest.json";
 import type { WindowType } from "./common/utils";
-import type { ComponentType } from "./components/base-component";
+import type {
+  ComponentType,
+  ComponentTypeKV,
+} from "./components/base-component";
 import type { BaseEntity } from "./entities/base-entity";
 import { getPixiApp, setPixiApp } from "./pixi-application";
 import {
@@ -49,10 +52,15 @@ class GameEngine {
     });
   }
 
-  addEntity(entity: BaseEntity & ComponentType) {
+  addEntity(entity: ComponentType) {
     const ee = this.miniplexECS.add(entity);
     const id = this.miniplexECS.id(ee);
     (entity as BaseEntity).ecsEntityId = id;
+  }
+
+  addEntityWithComponent(entity: ComponentType, componentKV: ComponentTypeKV) {
+    const newEntity = Object.assign(entity, componentKV);
+    this.addEntity(newEntity);
   }
 
   addComponent(

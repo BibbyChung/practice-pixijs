@@ -1,5 +1,6 @@
 import type { Ticker } from "pixi.js";
 import { BaseSystem } from "./base-system";
+import type { BaseEntity } from "../entities/base-entity";
 
 export class MoveSystem extends BaseSystem {
   protected getQuery() {
@@ -8,7 +9,8 @@ export class MoveSystem extends BaseSystem {
   }
   execute(): void {
     this.getQuery().subscribe((entity) => {
-      const pixiElem = entity.pixiElem;
+      const ee = entity as BaseEntity;
+      const pixiElem = ee.pixiElem;
       if (pixiElem) {
         const func = (delta: Ticker) => {
           // check for destruction

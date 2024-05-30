@@ -5,8 +5,9 @@ import { EnumContainerLabel } from "../common/utils";
 import { CreateComponent } from "../components/create-component";
 import { MoveComponent } from "../components/move-component";
 import { PlacementComponent } from "../components/placement-component";
+import { getComponentKV } from "../components/base-component";
 
-export class ButtonEntity extends BaseEntity {
+export class SpriteEntity extends BaseEntity {
   create(): void | Promise<void> {
     const sp = Sprite.from(this._ge.loadScreenAssets.ghost);
     this.pixiElem = sp;
@@ -33,12 +34,20 @@ export class ButtonEntity extends BaseEntity {
   }
 }
 
-export const getButtonEntity = () => {
-  const ee = new ButtonEntity();
-
-  return Object.assign(ee, {
-    createComponent: new CreateComponent(ee),
-    placementComponent: new PlacementComponent(ee, EnumContainerLabel.root, 10),
-    moveComponent: new MoveComponent(ee, 3, 4),
+export const getSpriteEntity = () => {
+  const entity = new SpriteEntity();
+  const componentKV = getComponentKV({
+    createComponent: new CreateComponent(entity),
+    placementComponent: new PlacementComponent(
+      entity,
+      EnumContainerLabel.root,
+      10
+    ),
+    moveComponent: new MoveComponent(entity, 3, 4),
   });
+
+  return {
+    entity,
+    componentKV,
+  };
 };

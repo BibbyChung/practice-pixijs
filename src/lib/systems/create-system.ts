@@ -1,3 +1,4 @@
+import type { BaseEntity } from "../entities/base-entity";
 import { BaseSystem } from "./base-system";
 
 export class CreateSystem extends BaseSystem {
@@ -6,7 +7,8 @@ export class CreateSystem extends BaseSystem {
   }
   execute(): void {
     this.getQuery().subscribe((entity) => {
-      entity.create();
+      const ee = entity as BaseEntity;
+      ee.create();
       this._ge.miniplexECS.removeComponent(entity, "createComponent");
     });
   }
