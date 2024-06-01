@@ -1,5 +1,5 @@
-import { Application } from "pixi.js";
-import { getRandomInt, type WindowType } from "./common/utils";
+import { Application, Ticker } from "pixi.js";
+import { getRandomInt, getSubject, type WindowType } from "./common/utils";
 import { getSpriteEntity } from "./entities/sprite-entity";
 import { getGameEngine } from "./game-engine";
 
@@ -26,6 +26,7 @@ const initGlobalKeyboardEvent = (w: WindowType) => {
 let _pixi: Application;
 export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
   const app = new Application();
+
   return app
     .init({
       width: w.innerWidth,
@@ -37,9 +38,13 @@ export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
     })
     .then(() => {
       _pixi = app;
+      app.ticker.add((delta) => ticker$.next(delta));
       elem.appendChild(app.canvas);
       initGlobalKeyboardEvent(w);
     });
 };
 
 export const getPixiApp = () => _pixi;
+
+const ticker$ = getSubject<Ticker>();
+export const getTicker = () => ticker$.asObservable();

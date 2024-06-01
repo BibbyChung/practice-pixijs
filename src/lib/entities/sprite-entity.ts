@@ -1,13 +1,12 @@
 import { Sprite } from "pixi.js";
-import { BaseEntity } from "./base-entity";
-import { DestroyComponent } from "../components/destroy-component";
 import { EnumContainerLabel, getRandomInt } from "../common/utils";
+import { getComponentKV } from "../components/base-component";
 import { CreateComponent } from "../components/create-component";
 import { MoveComponent } from "../components/move-component";
 import { PlacementComponent } from "../components/placement-component";
-import { getComponentKV } from "../components/base-component";
-import type { assetsKey } from "../pixi-assets";
 import { getGameEngine } from "../game-engine";
+import type { assetsKey } from "../pixi-assets";
+import { BaseEntity } from "./base-entity";
 
 export class SpriteEntity extends BaseEntity {
   constructor(
@@ -29,7 +28,10 @@ export class SpriteEntity extends BaseEntity {
     sp.interactive = true;
 
     sp.on("pointerdown", (event) => {
-      console.log(`button pointerdown => ${event.client}`);
+      const bounds = sp.getBounds();
+      console.log(
+        `x:${bounds.x}, y:${bounds.y}, width:${bounds.width}, heigh:${bounds.height}`
+      );
 
       // destroy entity
       // const self = this._ge.miniplexECS.entity(this.ecsEntityId ?? 0);
