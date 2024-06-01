@@ -1,4 +1,5 @@
 import type { BaseEntity } from "../entities/base-entity";
+import type { CollisionComponent } from "./collision-component";
 import type { ContainerComponent } from "./container-component";
 import type { CreateComponent } from "./create-component";
 import type { DestroyComponent } from "./destroy-component";
@@ -18,6 +19,7 @@ export abstract class ComponentType {
   placementComponent?: PlacementComponent;
   destroyComponent?: DestroyComponent;
   moveComponent?: MoveComponent;
+  collisionComponent?: CollisionComponent;
 }
 
 export type ComponentTypeKV = { [K in keyof ComponentType]: ComponentType };

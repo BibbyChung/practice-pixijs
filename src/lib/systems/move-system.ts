@@ -1,8 +1,8 @@
-import { BaseSystem } from "./base-system";
-import type { BaseEntity } from "../entities/base-entity";
-import { getTicker } from "../pixi-application";
 import { tap } from "rxjs";
 import { setDestroySub } from "../common/utils";
+import type { BaseEntity } from "../entities/base-entity";
+import { getTickerLoop } from "../pixi-application";
+import { BaseSystem } from "./base-system";
 
 export class MoveSystem extends BaseSystem {
   protected getQuery() {
@@ -14,12 +14,11 @@ export class MoveSystem extends BaseSystem {
       const ee = entity as BaseEntity;
       const pixiElem = ee.pixiElem;
       if (pixiElem) {
-        const sub = getTicker()
+        const sub = getTickerLoop()
           .pipe(
             tap((delta) => {
               // check for destruction
               if (entity.destroyComponent?.isDestroy ?? false) {
-                // this._ge.pixiApp.ticker.remove(func);
                 setDestroySub(sub);
                 return;
               }

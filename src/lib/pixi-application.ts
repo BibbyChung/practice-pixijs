@@ -11,15 +11,17 @@ const initGlobalKeyboardEvent = (w: WindowType) => {
     // console.log(event.clientX, event.clientY);
     // add new ghost entity
     const ge = getGameEngine();
-    const scale = getRandomInt(5, 20) / 100;
-    const obj = getSpriteEntity(
-      "ghost",
-      scale,
-      scale,
-      event.clientX,
-      event.clientY
-    );
-    ge.addEntityWithComponent(obj.entity, obj.componentKV);
+    [...Array(3).keys()].forEach(() => {
+      const scale = getRandomInt(5, 20) / 100;
+      const obj = getSpriteEntity(
+        "ghost",
+        scale,
+        scale,
+        event.clientX,
+        event.clientY
+      );
+      ge.addEntityWithComponent(obj.entity, obj.componentKV);
+    });
   });
 };
 
@@ -38,7 +40,7 @@ export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
     })
     .then(() => {
       _pixi = app;
-      app.ticker.add((delta) => ticker$.next(delta));
+      app.ticker.add((delta) => tickerLoop$.next(delta));
       elem.appendChild(app.canvas);
       initGlobalKeyboardEvent(w);
     });
@@ -46,5 +48,5 @@ export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
 
 export const getPixiApp = () => _pixi;
 
-const ticker$ = getSubject<Ticker>();
-export const getTicker = () => ticker$.asObservable();
+const tickerLoop$ = getSubject<Ticker>();
+export const getTickerLoop = () => tickerLoop$.asObservable();

@@ -13,10 +13,7 @@ import {
   getLoadScreenAssets,
   setLoadScreenAssetsBundle,
 } from "./pixi-assets";
-import { CreateSystem } from "./systems/create-system";
-import { DestroySystem } from "./systems/destroy-system";
-import { MoveSystem } from "./systems/move-system";
-import { PlacementSystem } from "./systems/placement-system";
+import { systemClasses } from "./systems/base-system";
 
 class GameEngine {
   pixiApp = getPixiApp();
@@ -38,15 +35,10 @@ class GameEngine {
     (globalThis as any).__PIXI_APP__ = this.pixiApp;
   }
 
-  initSystems() {
+  async initSystems() {
     Assets.init({ manifest });
-    [
-      //
-      CreateSystem,
-      PlacementSystem,
-      DestroySystem,
-      MoveSystem,
-    ].forEach((system) => {
+    const systems = await Promise.all(systemClasses);
+    systems.forEach((system) => {
       const obj = new system();
       obj.execute();
     });
@@ -76,7 +68,7 @@ let _gameSystem: GameEngine;
 export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   await setPixiApp(elem, w);
   _gameSystem = new GameEngine(w);
-  _gameSystem.initSystems();
+  await _gameSystem.initSystems();
   await setLoadScreenAssetsBundle();
 };
 export const getGameEngine = () => {

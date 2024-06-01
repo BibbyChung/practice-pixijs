@@ -10,6 +10,8 @@ export abstract class BaseEntity extends ComponentType {
 
   abstract create(): void | Promise<void>;
   destroy(): void {
-    this.pixiElem?.destroy();
+    setTimeout(() => {
+      this.pixiElem?.destroy();
+    }, 0);
   }
 }

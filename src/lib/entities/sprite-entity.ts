@@ -1,3 +1,4 @@
+import { CollisionComponent } from "./../components/collision-component";
 import { Sprite } from "pixi.js";
 import { EnumContainerLabel, getRandomInt } from "../common/utils";
 import { getComponentKV } from "../components/base-component";
@@ -73,6 +74,7 @@ export const getSpriteEntity = (
       10
     ),
     moveComponent: new MoveComponent(entity, vX, vY),
+    collisionComponent: new CollisionComponent(entity),
   });
 
   return {
