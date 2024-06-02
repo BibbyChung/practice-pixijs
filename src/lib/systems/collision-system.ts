@@ -1,8 +1,8 @@
-import { Bounds } from "pixi.js";
+import type { Rect } from "@timohausmann/quadtree-js";
 import { tap } from "rxjs";
 import { isRectangleCollision, setDestroySub } from "../common/utils";
 import type { BaseEntity } from "../entities/base-entity";
-import { getTickerLoop } from "../pixi-application";
+import { getTickerCollisionQTreeLoop } from "../game-engine";
 import { BaseSystem } from "./base-system";
 
 export class CollisionSystem extends BaseSystem {
@@ -17,22 +17,25 @@ export class CollisionSystem extends BaseSystem {
     this.getQuery().subscribe((sourceEntity) => {
       const sourceBaseEntity = sourceEntity as BaseEntity;
       if (sourceBaseEntity.pixiElem) {
-        const sub = getTickerLoop()
+        const sub = getTickerCollisionQTreeLoop()
           .pipe(
-            tap(() => {
+            tap(({ delta, qTree }) => {
               // check for destruction
               if (sourceEntity.destroyComponent?.isDestroy ?? false) {
                 setDestroySub(sub);
                 return;
               }
 
-              const targetEntitiesQuery = this._ge.miniplexECS
-                .without("createComponent")
-                .without("destroyComponent")
-                .with("moveComponent")
-                .with("collisionComponent");
+              const targetEntitiesQuery = qTree.retrieve<
+                Rect & { entity: BaseEntity }
+              >(sourceEntity.collisionComponent.bounds);
+              if (!targetEntitiesQuery) {
+                return;
+              }
 
-              for (const targetEntity of targetEntitiesQuery) {
+              // console.log(targetEntitiesQuery.length);
+              for (const treeEntity of targetEntitiesQuery) {
+                const targetEntity = treeEntity.entity;
                 const targetBaseEntity = targetEntity as BaseEntity;
                 if (
                   sourceBaseEntity.ecsEntityId === targetBaseEntity.ecsEntityId
@@ -46,25 +49,12 @@ export class CollisionSystem extends BaseSystem {
 
                 const targetPixiElem = targetBaseEntity.pixiElem!;
                 const targetEntityBound =
-                  targetEntity.collisionComponent.bounds;
+                  targetEntity!.collisionComponent!.bounds;
 
                 if (
                   !sourceEntity.collisionComponent.isCollision &&
                   isRectangleCollision(sourceEntityBound, targetEntityBound)
                 ) {
-                  // destroy
-                  // this._ge.addComponent(
-                  //   sourceEntity,
-                  //   "destroyComponent",
-                  //   new DestroyComponent(sourceEntity)
-                  // );
-                  // this._ge.addComponent(
-                  //   targetBaseEntity,
-                  //   "destroyComponent",
-                  //   new DestroyComponent(targetBaseEntity)
-                  // );
-                  // return;
-
                   // change direction
                   sourceEntity.collisionComponent.isCollision = true;
 

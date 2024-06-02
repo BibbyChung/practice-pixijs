@@ -1,13 +1,15 @@
+import Quadtree from "@timohausmann/quadtree-js";
 import { World } from "miniplex";
 import { Assets } from "pixi.js";
+import { map, shareReplay } from "rxjs";
 import manifest from "../assets/manifest.json";
-import type { WindowType } from "./common/utils";
+import { type WindowType } from "./common/utils";
 import type {
   ComponentType,
   ComponentTypeKV,
 } from "./components/base-component";
-import type { BaseEntity } from "./entities/base-entity";
-import { getPixiApp, setPixiApp } from "./pixi-application";
+import { BaseEntity } from "./entities/base-entity";
+import { getPixiApp, getTickerLoop, setPixiApp } from "./pixi-application";
 import {
   getGameScreenAssets,
   getLoadScreenAssets,
@@ -74,3 +76,46 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
 export const getGameEngine = () => {
   return _gameSystem;
 };
+
+// quadtree
+// https://github.com/timohausmann/quadtree-js
+let qTree: Quadtree | null = null;
+const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
+  map((delta) => {
+    if (!qTree) {
+      qTree = new Quadtree(
+        {
+          x: 0,
+          y: 0,
+          width: _gameSystem.screenWitdh,
+          height: _gameSystem.screenHeight,
+        },
+        6,
+        3
+      );
+    }
+
+    qTree.clear();
+    const query = _gameSystem.miniplexECS
+      .without("createComponent")
+      .with("collisionComponent");
+
+    for (const item of query) {
+      const bounds = item.collisionComponent.bounds;
+      qTree.insert({
+        x: bounds.x,
+        y: bounds.y,
+        width: bounds.width,
+        height: bounds.height,
+        entity: item,
+      } as any);
+    }
+    return {
+      delta,
+      qTree,
+    };
+  }),
+  shareReplay(1)
+);
+
+export const getTickerCollisionQTreeLoop = () => tickerCollisionQTreeLoop$;

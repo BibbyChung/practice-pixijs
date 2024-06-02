@@ -11,7 +11,7 @@ const initGlobalKeyboardEvent = (w: WindowType) => {
     // console.log(event.clientX, event.clientY);
     // add new ghost entity
     const ge = getGameEngine();
-    [...Array(3).keys()].forEach(() => {
+    [...Array(10).keys()].forEach(() => {
       const scale = getRandomInt(5, 20) / 100;
       const obj = getSpriteEntity(
         "ghost",

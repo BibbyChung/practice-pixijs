@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@timohausmann/quadtree-js':
+    specifier: ^1.2.6
+    version: 1.2.6
   gh-pages:
     specifier: ^6.1.1
     version: 6.1.1
@@ -490,6 +493,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@timohausmann/quadtree-js@1.2.6:
+    resolution: {integrity: sha512-EoAoLMFV2JfSG8+8XD9xWJQdyvfEB5xNpiQWGD7rTDSbDQQV8IVpkm0uOIxwJZ+1uC9hHKri9GmJ5wBSUO4jfg==}
+    dev: false
 
   /@tsconfig/svelte@5.0.4:
     resolution: {integrity: sha512-BV9NplVgLmSi4mwKzD8BD/NQ8erOY/nUE/GpgWe2ckx+wIQF5RyRirn/QsSSCPeulVpc3RA/iJt6DpfTIZps0Q==}
