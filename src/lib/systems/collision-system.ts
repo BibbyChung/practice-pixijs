@@ -26,10 +26,46 @@ export class CollisionSystem extends BaseSystem {
                 return;
               }
 
+              const sourcePixiElem = sourceBaseEntity.pixiElem!;
+              const sourceEntityBound = sourceEntity.collisionComponent.bounds;
+
+              const sourceLeftX =
+                sourcePixiElem.position.x - sourceEntityBound.width / 2;
+              const sourceRightX =
+                sourcePixiElem.position.x + sourceEntityBound.width / 2;
+              const sourceTopY =
+                sourcePixiElem.position.y - sourceEntityBound.height / 2;
+              const sourceBottomY =
+                sourcePixiElem.position.y + sourceEntityBound.height / 2;
+
+              // screen bound collision
+              if (sourceLeftX < 0) {
+                sourceEntity.moveComponent.velocityX = Math.abs(
+                  sourceEntity.moveComponent.velocityX
+                );
+              }
+
+              if (sourceRightX > this._ge.screenWitdh) {
+                sourceEntity.moveComponent.velocityX =
+                  Math.abs(sourceEntity.moveComponent.velocityX) * -1;
+              }
+
+              if (sourceTopY < 0) {
+                sourceEntity.moveComponent.velocityY = Math.abs(
+                  sourceEntity.moveComponent.velocityY
+                );
+              }
+
+              if (sourceBottomY > this._ge.screenHeight) {
+                sourceEntity.moveComponent.velocityY =
+                  Math.abs(sourceEntity.moveComponent.velocityY) * -1;
+              }
+
+              // many to many collision
               const targetEntitiesQuery = qTree.retrieve<
                 Rect & { entity: BaseEntity }
               >(sourceEntity.collisionComponent.bounds);
-              if (!targetEntitiesQuery) {
+              if (targetEntitiesQuery.length === 0) {
                 return;
               }
 
@@ -43,10 +79,6 @@ export class CollisionSystem extends BaseSystem {
                   continue;
                 }
 
-                const sourcePixiElem = sourceBaseEntity.pixiElem!;
-                const sourceEntityBound =
-                  sourceEntity.collisionComponent.bounds;
-
                 const targetPixiElem = targetBaseEntity.pixiElem!;
                 const targetEntityBound =
                   targetEntity!.collisionComponent!.bounds;
@@ -58,40 +90,37 @@ export class CollisionSystem extends BaseSystem {
                   // change direction
                   sourceEntity.collisionComponent.isCollision = true;
 
-                  const selfMaxX =
-                    sourcePixiElem.position.x + sourceEntityBound.width / 2;
-                  const selfMinX =
-                    sourcePixiElem.position.x - sourceEntityBound.width / 2;
-                  const selfMaxY =
-                    sourcePixiElem.position.y + sourceEntityBound.height / 2;
-                  const selfMinY =
-                    sourcePixiElem.position.y - sourceEntityBound.height / 2;
-
-                  const targetMaxX =
-                    targetPixiElem.position.x + targetEntityBound.width / 2;
-                  const targetMinX =
+                  const targetLeftX =
                     targetPixiElem.position.x - targetEntityBound.width / 2;
-                  const targetMaxY =
-                    targetPixiElem.position.y + targetEntityBound.height / 2;
-                  const targetMinY =
+                  const targetRightX =
+                    targetPixiElem.position.x + targetEntityBound.width / 2;
+                  const targetTopY =
                     targetPixiElem.position.y - targetEntityBound.height / 2;
+                  const targetBottomY =
+                    targetPixiElem.position.y + targetEntityBound.height / 2;
 
-                  if (selfMaxX > targetMaxX) {
+                  if (sourceRightX > targetRightX || sourceRightX < 0) {
                     sourceEntity.moveComponent.velocityX = Math.abs(
                       sourceEntity.moveComponent.velocityX
                     );
                   }
-                  if (selfMinX < targetMinX) {
+                  if (
+                    sourceLeftX < targetLeftX ||
+                    sourceLeftX > this._ge.screenWitdh
+                  ) {
                     sourceEntity.moveComponent.velocityX =
                       Math.abs(sourceEntity.moveComponent.velocityX) * -1;
                   }
 
-                  if (selfMaxY > targetMaxY) {
+                  if (sourceBottomY > targetBottomY || sourceBottomY < 0) {
                     sourceEntity.moveComponent.velocityY = Math.abs(
                       sourceEntity.moveComponent.velocityY
                     );
                   }
-                  if (selfMinY < targetMinY) {
+                  if (
+                    sourceTopY < targetTopY ||
+                    sourceTopY > this._ge.screenHeight
+                  ) {
                     sourceEntity.moveComponent.velocityY =
                       Math.abs(sourceEntity.moveComponent.velocityY) * -1;
                   }
