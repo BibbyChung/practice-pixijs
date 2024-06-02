@@ -1,1 +1,0 @@
-import{B as t}from"./index-YpI8y5Bw.js";class o extends t{getQuery(){return this._ge.miniplexECS.with("createComponent").onEntityAdded}execute(){this.getQuery().subscribe(e=>{e.create(),this._ge.miniplexECS.removeComponent(e,"createComponent")})}}export{o as CreateSystem};
