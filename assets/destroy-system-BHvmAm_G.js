@@ -1,1 +1,0 @@
-import{B as s}from"./index-qMX9NPDX.js";class i extends s{getQuery(){return this._ge.miniplexECS.with("destroyComponent").onEntityAdded}execute(){this.getQuery().subscribe(e=>{e.destroyComponent.isDestroy=!0,this._ge.miniplexECS.remove(e);const t=e;setTimeout(()=>{t.destroy(),console.log("destory...")},0)})}}export{i as DestroySystem};
