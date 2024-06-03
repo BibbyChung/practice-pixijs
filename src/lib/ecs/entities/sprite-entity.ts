@@ -1,12 +1,12 @@
-import { CollisionComponent } from "./../components/collision-component";
 import { Sprite } from "pixi.js";
-import { EnumContainerLabel, getRandomInt } from "../common/utils";
-import { getComponentKV } from "../components/base-component";
+import { getComponentKV, type ComponentType } from "..";
+import { EnumContainerLabel, getRandomInt } from "../../common/utils";
+import { getGameEngine } from "../../game-engine";
+import type { assetsKey } from "../../pixi-assets";
 import { CreateComponent } from "../components/create-component";
 import { MoveComponent } from "../components/move-component";
 import { PlacementComponent } from "../components/placement-component";
-import { getGameEngine } from "../game-engine";
-import type { assetsKey } from "../pixi-assets";
+import { CollisionComponent } from "./../components/collision-component";
 import { BaseEntity } from "./base-entity";
 
 export class SpriteEntity extends BaseEntity {
@@ -78,7 +78,7 @@ export const getSpriteEntity = (
   });
 
   return {
-    entity,
+    entity: entity as ComponentType,
     componentKV,
   };
 };

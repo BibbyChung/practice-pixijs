@@ -1,6 +1,6 @@
-import { getComponentKV } from "./../components/base-component";
 import { Text, type TextStyle, type TextStyleOptions } from "pixi.js";
-import { EnumContainerLabel } from "../common/utils";
+import { getComponentKV, type ComponentType } from "..";
+import { EnumContainerLabel } from "../../common/utils";
 import { CreateComponent } from "../components/create-component";
 import { PlacementComponent } from "../components/placement-component";
 import { BaseEntity } from "./base-entity";
@@ -47,7 +47,7 @@ export const getTextEntity = () => {
   });
 
   return {
-    entity,
+    entity: entity as ComponentType,
     componentKV,
   };
 };

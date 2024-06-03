@@ -1,13 +1,10 @@
 import { Container } from "pixi.js";
-import { EnumContainerLabel } from "../common/utils";
+import { getComponentKV, type ComponentType } from "..";
+import { EnumContainerLabel } from "../../common/utils";
 import { ContainerComponent } from "../components/container-component";
 import { CreateComponent } from "../components/create-component";
 import { PlacementComponent } from "../components/placement-component";
 import { BaseEntity } from "./base-entity";
-import type {
-  ComponentType,
-  ComponentTypeKV,
-} from "../components/base-component";
 
 export class ContainerEntity extends BaseEntity {
   create(): void | Promise<void> {
@@ -19,7 +16,7 @@ export class ContainerEntity extends BaseEntity {
 
 export const getRootContainerEntity = () => {
   const entity = new ContainerEntity();
-  const componetKV = {
+  const componentKV = getComponentKV({
     createComponent: new CreateComponent(entity),
     containerComponent: new ContainerComponent(entity),
     placementComponent: new PlacementComponent(
@@ -27,9 +24,9 @@ export const getRootContainerEntity = () => {
       EnumContainerLabel.none,
       0
     ),
-  } as ComponentTypeKV;
+  });
   return {
-    entity,
-    componetKV,
+    entity: entity as ComponentType,
+    componentKV: componentKV,
   };
 };

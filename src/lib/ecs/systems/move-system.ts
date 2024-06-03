@@ -1,7 +1,7 @@
 import { tap } from "rxjs";
-import { setDestroySub } from "../common/utils";
+import { setDestroySub } from "../../common/utils";
+import { getTickerLoop } from "../../pixi-application";
 import type { BaseEntity } from "../entities/base-entity";
-import { getTickerLoop } from "../pixi-application";
 import { BaseSystem } from "./base-system";
 
 export class MoveSystem extends BaseSystem {
@@ -11,7 +11,7 @@ export class MoveSystem extends BaseSystem {
   }
   execute(): void {
     this.getQuery().subscribe((entity) => {
-      const ee = entity as BaseEntity;
+      const ee = entity as any as BaseEntity;
       const pixiElem = ee.pixiElem;
       if (pixiElem) {
         const sub = getTickerLoop()

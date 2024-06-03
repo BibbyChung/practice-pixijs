@@ -7,7 +7,7 @@ export class CreateSystem extends BaseSystem {
   }
   execute(): void {
     this.getQuery().subscribe((entity) => {
-      const ee = entity as BaseEntity;
+      const ee = entity as any as BaseEntity;
       ee.create();
       this._ge.miniplexECS.removeComponent(entity, "createComponent");
     });

@@ -1,12 +1,12 @@
 import type { BaseEntity } from "../entities/base-entity";
-import { BaseComponent, ComponentType } from "./base-component";
+import { BaseComponent } from "./base-component";
 
 export class MoveComponent extends BaseComponent {
   constructor(
-    protected comp: ComponentType,
+    public entity: BaseEntity,
     public velocityX: number,
     public velocityY: number
   ) {
-    super(comp);
+    super(entity);
   }
 }

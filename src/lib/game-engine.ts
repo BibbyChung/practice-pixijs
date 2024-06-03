@@ -4,18 +4,14 @@ import { Assets } from "pixi.js";
 import { map, shareReplay } from "rxjs";
 import manifest from "../assets/manifest.json";
 import { type WindowType } from "./common/utils";
-import type {
-  ComponentType,
-  ComponentTypeKV,
-} from "./components/base-component";
-import { BaseEntity } from "./entities/base-entity";
+import { systemClasses, type ComponentType, type ComponentTypeKV } from "./ecs";
+import { BaseEntity } from "./ecs/entities/base-entity";
 import { getPixiApp, getTickerLoop, setPixiApp } from "./pixi-application";
 import {
   getGameScreenAssets,
   getLoadScreenAssets,
   setLoadScreenAssetsBundle,
 } from "./pixi-assets";
-import { systemClasses } from "./systems/base-system";
 
 class GameEngine {
   pixiApp = getPixiApp();

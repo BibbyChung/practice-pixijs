@@ -1,8 +1,9 @@
 import type { Container } from "pixi.js";
-import { getGameEngine } from "../game-engine";
-import { ComponentType } from "../components/base-component";
+import { type ComponentType } from "..";
+import { getGameEngine } from "../../game-engine";
 
-export abstract class BaseEntity extends ComponentType {
+abstract class ComponentAbstractClass implements ComponentType {}
+export abstract class BaseEntity implements ComponentAbstractClass {
   protected _ge = getGameEngine();
   pixiElem?: Container;
   ecsEntityId?: number;

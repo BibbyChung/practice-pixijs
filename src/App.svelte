@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getSpriteEntity } from "./lib/entities/sprite-entity";
-  import { getRootContainerEntity } from "./lib/entities/container-entity";
-  import { getTextEntity } from "./lib/entities/text-entity";
+  import { getRootContainerEntity } from "./lib/ecs/entities/container-entity";
+  import { getSpriteEntity } from "./lib/ecs/entities/sprite-entity";
+  import { getTextEntity } from "./lib/ecs/entities/text-entity";
   import { getGameEngine, initGameEngine } from "./lib/game-engine";
 
   let mainElem: HTMLElement;
@@ -15,7 +15,7 @@
     const world = getGameEngine();
 
     const rec = getRootContainerEntity();
-    world.addEntityWithComponent(rec.entity, rec.componetKV);
+    world.addEntityWithComponent(rec.entity, rec.componentKV);
 
     // 創建一個文字
     const te = getTextEntity();

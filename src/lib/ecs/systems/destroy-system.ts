@@ -9,7 +9,7 @@ export class DestroySystem extends BaseSystem {
     this.getQuery().subscribe((entity) => {
       entity.destroyComponent.isDestroy = true;
       this._ge.miniplexECS.remove(entity);
-      const be = entity as BaseEntity;
+      const be = entity as any as BaseEntity;
       setTimeout(() => {
         be.destroy();
         console.log("destory...");

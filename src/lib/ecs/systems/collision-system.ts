@@ -1,8 +1,9 @@
 import type { Rect } from "@timohausmann/quadtree-js";
 import { tap } from "rxjs";
-import { isRectangleCollision, setDestroySub } from "../common/utils";
+import type { ComponentType } from "..";
+import { isRectangleCollision, setDestroySub } from "../../common/utils";
+import { getTickerCollisionQTreeLoop } from "../../game-engine";
 import type { BaseEntity } from "../entities/base-entity";
-import { getTickerCollisionQTreeLoop } from "../game-engine";
 import { BaseSystem } from "./base-system";
 
 export class CollisionSystem extends BaseSystem {
@@ -15,7 +16,7 @@ export class CollisionSystem extends BaseSystem {
 
   execute(): void {
     this.getQuery().subscribe((sourceEntity) => {
-      const sourceBaseEntity = sourceEntity as BaseEntity;
+      const sourceBaseEntity = sourceEntity as any as BaseEntity;
       if (sourceBaseEntity.pixiElem) {
         const sub = getTickerCollisionQTreeLoop()
           .pipe(
@@ -71,8 +72,8 @@ export class CollisionSystem extends BaseSystem {
 
               // console.log(targetEntitiesQuery.length);
               for (const treeEntity of targetEntitiesQuery) {
-                const targetEntity = treeEntity.entity;
-                const targetBaseEntity = targetEntity as BaseEntity;
+                // const targetEntity = treeEntity.entity;
+                const targetBaseEntity = treeEntity.entity as BaseEntity;
                 if (
                   sourceBaseEntity.ecsEntityId === targetBaseEntity.ecsEntityId
                 ) {
@@ -80,8 +81,8 @@ export class CollisionSystem extends BaseSystem {
                 }
 
                 const targetPixiElem = targetBaseEntity.pixiElem!;
-                const targetEntityBound =
-                  targetEntity!.collisionComponent!.bounds;
+                const targetEntityBound = (treeEntity.entity as ComponentType)!
+                  .collisionComponent!.bounds;
 
                 if (
                   !sourceEntity.collisionComponent.isCollision &&
