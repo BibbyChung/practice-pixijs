@@ -1,12 +1,5 @@
 import { Sprite } from "pixi.js";
-import { getComponentKV, type ComponentType } from "..";
-import { EnumContainerLabel, getRandomInt } from "../../common/utils";
-import { getGameEngine } from "../../game-engine";
 import type { assetsKey } from "../../pixi-assets";
-import { CreateComponent } from "../components/create-component";
-import { MoveComponent } from "../components/move-component";
-import { PlacementComponent } from "../components/placement-component";
-import { CollisionComponent } from "./../components/collision-component";
 import { BaseEntity } from "./base-entity";
 
 export class SpriteEntity extends BaseEntity {
@@ -46,39 +39,3 @@ export class SpriteEntity extends BaseEntity {
     });
   }
 }
-
-export const getSpriteEntity = (
-  key: assetsKey,
-  scaleX: number,
-  scaleY: number,
-  positionX: number = 0,
-  positionY: number = 0
-) => {
-  const ge = getGameEngine();
-  let newPX = positionX;
-  let newPY = positionY;
-  if (positionX === 0 && positionY === 0) {
-    newPX = ge.pixiApp.screen.width / 2;
-    newPY = ge.pixiApp.screen.height / 2;
-  }
-
-  const vX = getRandomInt(20, 80) / 10 - 4;
-  const vY = getRandomInt(20, 80) / 10 - 4;
-
-  const entity = new SpriteEntity(key, scaleX, scaleY, newPX, newPY);
-  const componentKV = getComponentKV({
-    createComponent: new CreateComponent(entity),
-    placementComponent: new PlacementComponent(
-      entity,
-      EnumContainerLabel.root,
-      10
-    ),
-    moveComponent: new MoveComponent(entity, vX, vY),
-    collisionComponent: new CollisionComponent(entity),
-  });
-
-  return {
-    entity: entity as ComponentType,
-    componentKV,
-  };
-};

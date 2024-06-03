@@ -1,6 +1,6 @@
 import { Application, Ticker } from "pixi.js";
 import { getRandomInt, getSubject, type WindowType } from "./common/utils";
-import { getSpriteEntity } from "./ecs/entities/sprite-entity";
+import { getSpriteEntity } from "./ecs/creator";
 import { getGameEngine } from "./game-engine";
 
 const initGlobalKeyboardEvent = (w: WindowType) => {

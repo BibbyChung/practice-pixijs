@@ -114,5 +114,4 @@ const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
   }),
   shareReplay(1)
 );
-
 export const getTickerCollisionQTreeLoop = () => tickerCollisionQTreeLoop$;

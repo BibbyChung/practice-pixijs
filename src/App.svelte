@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getRootContainerEntity } from "./lib/ecs/entities/container-entity";
-  import { getSpriteEntity } from "./lib/ecs/entities/sprite-entity";
-  import { getTextEntity } from "./lib/ecs/entities/text-entity";
+  import {
+    getRootContainerEntity,
+    getSpriteEntity,
+    getTextEntity,
+  } from "./lib/ecs/creator";
   import { getGameEngine, initGameEngine } from "./lib/game-engine";
 
   let mainElem: HTMLElement;
