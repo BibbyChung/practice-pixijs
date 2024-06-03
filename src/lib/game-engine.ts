@@ -96,15 +96,16 @@ const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
       .without("createComponent")
       .with("collisionComponent");
 
-    for (const item of query) {
-      const bounds = item.collisionComponent.bounds;
-      qTree.insert({
+    for (const comp of query) {
+      const bounds = comp.collisionComponent.bounds;
+      const obj = {
         x: bounds.x,
         y: bounds.y,
         width: bounds.width,
         height: bounds.height,
-        entity: item,
-      } as any);
+        comp,
+      };
+      qTree.insert(obj);
     }
     return {
       delta,

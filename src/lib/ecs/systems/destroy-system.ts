@@ -1,4 +1,3 @@
-import type { BaseEntity } from "../entities/base-entity";
 import { BaseSystem } from "./base-system";
 
 export class DestroySystem extends BaseSystem {
@@ -6,10 +5,10 @@ export class DestroySystem extends BaseSystem {
     return this._ge.miniplexECS.with("destroyComponent").onEntityAdded;
   }
   execute(): void {
-    this.getQuery().subscribe((entity) => {
-      entity.destroyComponent.isDestroy = true;
-      this._ge.miniplexECS.remove(entity);
-      const be = entity as any as BaseEntity;
+    this.getQuery().subscribe((comp) => {
+      comp.destroyComponent.isDestroy = true;
+      this._ge.miniplexECS.remove(comp);
+      const be = comp.destroyComponent.entity;
       setTimeout(() => {
         be.destroy();
         console.log("destory...");
