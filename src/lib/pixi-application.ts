@@ -7,7 +7,7 @@ const initGlobalKeyboardEvent = (w: WindowType) => {
   w.addEventListener("keydown", (k) => {
     console.log(k.key);
   });
-  w.addEventListener("mouseup", (event) => {
+  w.addEventListener("pointerdown", (event) => {
     // console.log(event.clientX, event.clientY);
     // add new ghost entity
     const ge = getGameEngine();

@@ -21,7 +21,7 @@ export class SpriteEntity extends BaseEntity {
     sp.scale.set(this.scaleX, this.scaleY);
     sp.interactive = true;
 
-    sp.on("pointerdown", (event) => {
+    sp.addEventListener("pointertap", (event) => {
       const bounds = sp.getBounds();
       console.log(
         `x:${bounds.x}, y:${bounds.y}, width:${bounds.width}, heigh:${bounds.height}`
