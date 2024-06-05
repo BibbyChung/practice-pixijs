@@ -44,7 +44,7 @@ export class CollisionSystem extends BaseSystem {
               );
             }
 
-            if (sourceRightX > this._ge.screenWitdh) {
+            if (sourceRightX > this._ge.canvasWitdh) {
               comp.moveComponent.velocityX =
                 Math.abs(comp.moveComponent.velocityX) * -1;
             }
@@ -55,7 +55,7 @@ export class CollisionSystem extends BaseSystem {
               );
             }
 
-            if (sourceBottomY > this._ge.screenHeight) {
+            if (sourceBottomY > this._ge.canvasHeight) {
               comp.moveComponent.velocityY =
                 Math.abs(comp.moveComponent.velocityY) * -1;
             }
@@ -105,7 +105,7 @@ export class CollisionSystem extends BaseSystem {
                 }
                 if (
                   sourceLeftX < targetLeftX ||
-                  sourceLeftX > this._ge.screenWitdh
+                  sourceLeftX > this._ge.canvasWitdh
                 ) {
                   comp.moveComponent.velocityX =
                     Math.abs(comp.moveComponent.velocityX) * -1;
@@ -118,7 +118,7 @@ export class CollisionSystem extends BaseSystem {
                 }
                 if (
                   sourceTopY < targetTopY ||
-                  sourceTopY > this._ge.screenHeight
+                  sourceTopY > this._ge.canvasHeight
                 ) {
                   comp.moveComponent.velocityY =
                     Math.abs(comp.moveComponent.velocityY) * -1;

@@ -10,3 +10,13 @@ main {
   width: 100vw;
   height: 100vh;
 }
+
+.mainCanvas {
+  max-height: 100%;
+  max-width: 100%;
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

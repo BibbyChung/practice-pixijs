@@ -50,12 +50,6 @@ destroySub$
   .subscribe();
 export const setDestroySub = (v: Subscription) => destroySub$.next(v);
 
-export const getRandomRGBA = () => ({
-  r: getRandomInt(0, 255),
-  g: getRandomInt(0, 255),
-  b: getRandomInt(0, 255),
-  a: getRandomInt(0, 10) / 10,
-});
 // rgb to hex
 export const getRGBA2Hex = (rgba: {
   r: number;
@@ -69,4 +63,24 @@ export const getRGBA2Hex = (rgba: {
     b: Math.round(rgba.b),
     a: rgba.a,
   }).toHex();
+};
+export const getRandomRGBA = () => ({
+  r: getRandomInt(0, 255),
+  g: getRandomInt(0, 255),
+  b: getRandomInt(0, 255),
+  a: getRandomInt(0, 10) / 10,
+});
+
+// get real x/y
+export const getConvertRealClientXY = (
+  clientX: number,
+  clientY: number,
+  w: WindowType
+) => {
+  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH;
+  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT;
+  return {
+    realClientX: (clientX * canvasWidth) / w.innerWidth,
+    realClientY: (clientY * canvasHeight) / w.innerHeight,
+  };
 };

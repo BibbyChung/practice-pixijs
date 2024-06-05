@@ -16,13 +16,14 @@ export class TextEntity extends BaseEntity {
       style: this.style,
     });
     t.interactive = true;
-    t.addEventListener("pointerdown", (event) => {
-      console.log(`text pointerdown => ${event.client}`);
-    });
     t.position.set(
       this._ge.pixiApp.screen.width / 2,
       this._ge.pixiApp.screen.height / 2
     );
     this.pixiElem = t;
+
+    t.addEventListener("pointerdown", (event) => {
+      console.log(`text pointerdown => ${event.client}`);
+    });
   }
 }

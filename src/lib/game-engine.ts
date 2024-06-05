@@ -23,14 +23,8 @@ class GameEngine {
   get gameScreenAssets() {
     return getGameScreenAssets();
   }
-  get screenWitdh() {
-    return this.w.innerWidth;
-  }
-  get screenHeight() {
-    return this.w.innerHeight;
-  }
 
-  constructor(private w: WindowType) {
+  constructor(public canvasWitdh: number, public canvasHeight: number) {
     (globalThis as any).__PIXI_APP__ = this.pixiApp;
   }
 
@@ -65,8 +59,10 @@ class GameEngine {
 
 let _gameSystem: GameEngine;
 export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
+  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH;
+  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT;
   await setPixiApp(elem, w);
-  _gameSystem = new GameEngine(w);
+  _gameSystem = new GameEngine(canvasWidth, canvasHeight);
   await _gameSystem.initSystems();
   await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
@@ -79,13 +75,14 @@ export const getGameEngine = () => {
 let qTree: Quadtree | null = null;
 const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
   map((delta) => {
+    const ge = getGameEngine();
     if (!qTree) {
       qTree = new Quadtree(
         {
           x: 0,
           y: 0,
-          width: _gameSystem.screenWitdh,
-          height: _gameSystem.screenHeight,
+          width: ge.canvasWitdh,
+          height: ge.canvasHeight,
         },
         6,
         3
@@ -93,7 +90,7 @@ const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
     }
 
     qTree.clear();
-    const query = _gameSystem.miniplexECS
+    const query = ge.miniplexECS
       .without("createComponent")
       .with("collisionComponent");
 
