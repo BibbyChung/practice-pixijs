@@ -1,6 +1,15 @@
 {
   "bundles": [
     {
+      "name": "fonts",
+      "assets": [
+        {
+          "alias": "Jaro Regular",
+          "src": "/fonts/Jaro/static/Jaro-Regular.ttf"
+        }
+      ]
+    },
+    {
       "name": "load-screen",
       "assets": [
         {

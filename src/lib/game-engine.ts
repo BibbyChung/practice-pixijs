@@ -10,6 +10,7 @@ import { getPixiApp, getTickerLoop, setPixiApp } from "./pixi-application";
 import {
   getGameScreenAssets,
   getLoadScreenAssets,
+  setFontsAssetsBundle,
   setLoadScreenAssetsBundle,
 } from "./pixi-assets";
 
@@ -67,7 +68,7 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   await setPixiApp(elem, w);
   _gameSystem = new GameEngine(w);
   await _gameSystem.initSystems();
-  await setLoadScreenAssetsBundle();
+  await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
 export const getGameEngine = () => {
   return _gameSystem;

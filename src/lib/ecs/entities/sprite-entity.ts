@@ -1,10 +1,10 @@
 import { Sprite } from "pixi.js";
-import type { assetsKey } from "../../pixi-assets";
+import type { assetsImgKey } from "../../pixi-assets";
 import { BaseEntity } from "./base-entity";
 
 export class SpriteEntity extends BaseEntity {
   constructor(
-    private assetKey: assetsKey,
+    private assetKey: assetsImgKey,
     private scaleX: number = 0.5,
     private scaleY: number = 0.5,
     private positionX: number = 0,

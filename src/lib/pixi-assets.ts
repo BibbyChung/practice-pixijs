@@ -1,8 +1,8 @@
 import { Assets, Texture } from "pixi.js";
 
-export type assetsKey = "ghost" | "sonic";
+export type assetsImgKey = "ghost" | "sonic";
 
-let _loadScreenAssets: Record<assetsKey, Texture>;
+let _loadScreenAssets: Record<assetsImgKey, Texture>;
 export const getLoadScreenAssets = () => {
   if (!_loadScreenAssets) {
     throw new Error(
@@ -30,4 +30,8 @@ export let setGameScreenAssetsBundle = async (
 ) => {
   const textureObj = await Assets.loadBundle("game-screen", func);
   return (_gameScreenAssets = textureObj);
+};
+
+export const setFontsAssetsBundle = async () => {
+  await Assets.loadBundle("fonts");
 };

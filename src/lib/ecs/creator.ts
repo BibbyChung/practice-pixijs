@@ -1,12 +1,14 @@
 import { getComponentKV, type ComponentType } from ".";
 import { EnumContainerLabel, getRandomInt } from "../common/utils";
 import { getGameEngine } from "../game-engine";
-import type { assetsKey } from "../pixi-assets";
+import type { assetsImgKey } from "../pixi-assets";
 import { CollisionComponent } from "./components/collision-component";
 import { ContainerComponent } from "./components/container-component";
 import { CreateComponent } from "./components/create-component";
 import { MoveComponent } from "./components/move-component";
 import { PlacementComponent } from "./components/placement-component";
+import { RandomColorFillComponent } from "./components/random-color-fill-component";
+import { RotationComponent } from "./components/rotation-component";
 import { ContainerEntity } from "./entities/container-entity";
 import { SpriteEntity } from "./entities/sprite-entity";
 import { TextEntity } from "./entities/text-entity";
@@ -29,7 +31,7 @@ export const getRootContainerEntity = () => {
 };
 
 export const getSpriteEntity = (
-  key: assetsKey,
+  key: assetsImgKey,
   scaleX: number,
   scaleY: number,
   positionX: number = 0,
@@ -56,6 +58,7 @@ export const getSpriteEntity = (
     ),
     moveComponent: new MoveComponent(entity, vX, vY),
     collisionComponent: new CollisionComponent(entity),
+    rotationComponent: new RotationComponent(entity),
   });
 
   return {
@@ -65,10 +68,11 @@ export const getSpriteEntity = (
 };
 
 export const getTextEntity = () => {
-  const entity = new TextEntity("Hello, Pixi!", {
-    fontSize: 48,
+  const entity = new TextEntity("Hello, BB!", {
+    fontSize: 72,
     fill: "white",
     align: "center",
+    fontFamily: "Jaro Regular",
   });
   const componentKV = getComponentKV({
     createComponent: new CreateComponent(entity),
@@ -77,6 +81,7 @@ export const getTextEntity = () => {
       EnumContainerLabel.root,
       20
     ),
+    randomColorFillComponent: new RandomColorFillComponent(entity),
   });
 
   return {
