@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 body {
-  background-color: #061626;
+  background-color: #000000;
 }
 main {
   width: 100vw;
@@ -14,6 +14,8 @@ main {
 .mainCanvas {
   max-height: 100%;
   max-width: 100%;
+  height: unset !important;
+  object-fit: conver;
 
   position: fixed;
   left: 50%;
