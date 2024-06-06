@@ -16,8 +16,6 @@ export class ContainerEntity extends BaseEntity {
       this._ge.designHeight
     );
     c.addEventListener("pointerdown", (event) => {
-      const rect = this._ge.RootCanvas.getBoundingClientRect();
-
       // add new ghost entity
       [...Array(10).keys()].forEach(() => {
         const scale = getRandomInt(10, 30) / 100;
@@ -25,8 +23,8 @@ export class ContainerEntity extends BaseEntity {
           "ghost",
           scale,
           scale,
-          this._ge.getRealClientX(event.clientX - rect.left),
-          this._ge.getRealClientY(event.clientY - rect.top)
+          this._ge.getCanvasClientX(event.clientX),
+          this._ge.getCanvasClientY(event.clientY)
         );
         this._ge.addEntityWithComponent(obj.entity, obj.componentKV);
       });

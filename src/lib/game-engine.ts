@@ -44,11 +44,13 @@ class GameEngine {
     return this.pixiApp.canvas.offsetHeight;
   }
 
-  getRealClientX(x: number) {
-    return (x * this.designWidth) / this.actualWidth;
+  getCanvasClientX(x: number) {
+    const rect = this.pixiApp.canvas.getBoundingClientRect();
+    return ((x - rect.left) * this.designWidth) / this.actualWidth;
   }
-  getRealClientY(y: number) {
-    return (y * this.designHeight) / this.actualHeight;
+  getCanvasClientY(y: number) {
+    const rect = this.pixiApp.canvas.getBoundingClientRect();
+    return ((y - rect.top) * this.designHeight) / this.actualHeight;
   }
 
   constructor() {
