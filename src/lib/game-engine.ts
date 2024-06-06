@@ -23,8 +23,25 @@ class GameEngine {
   get gameScreenAssets() {
     return getGameScreenAssets();
   }
+  get RootCanvas() {
+    return this.pixiApp.canvas;
+  }
 
-  constructor(public canvasWitdh: number, public canvasHeight: number) {
+  size = {
+    designWitdh: 0,
+    designHeight: 0,
+    actualWidth: 0,
+    actualHeight: 0,
+  };
+
+  getRealClientX(x: number) {
+    return (x * this.size.designWitdh) / this.size.actualWidth;
+  }
+  getRealClientY(y: number) {
+    return (y * this.size.designHeight) / this.size.actualHeight;
+  }
+
+  constructor() {
     (globalThis as any).__PIXI_APP__ = this.pixiApp;
   }
 
@@ -62,7 +79,15 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH;
   const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT;
   await setPixiApp(elem, w);
-  _gameSystem = new GameEngine(canvasWidth, canvasHeight);
+  // set actual canvas width/height
+  const canvasElem = elem.querySelector("canvas")!;
+  _gameSystem = new GameEngine();
+  _gameSystem.size = {
+    designWitdh: canvasWidth,
+    designHeight: canvasHeight,
+    actualWidth: canvasElem.offsetWidth,
+    actualHeight: canvasElem.offsetHeight,
+  };
   await _gameSystem.initSystems();
   await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
@@ -81,8 +106,8 @@ const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
         {
           x: 0,
           y: 0,
-          width: ge.canvasWitdh,
-          height: ge.canvasHeight,
+          width: ge.size.designWitdh,
+          height: ge.size.designHeight,
         },
         6,
         3

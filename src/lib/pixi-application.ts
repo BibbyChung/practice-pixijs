@@ -1,38 +1,9 @@
-import { tap } from "rxjs";
 import { Application, Ticker } from "pixi.js";
-import {
-  getConvertRealClientXY,
-  getRandomInt,
-  getSubject,
-  type WindowType,
-} from "./common/utils";
-import { getSpriteEntity } from "./ecs/creator";
-import { getGameEngine } from "./game-engine";
+import { getSubject, type WindowType } from "./common/utils";
 
 const initGlobalKeyboardEvent = (w: WindowType) => {
   w.addEventListener("keydown", (k) => {
     console.log(k.key);
-  });
-  w.addEventListener("pointerdown", (event) => {
-    const realClientXY = getConvertRealClientXY(
-      event.clientX,
-      event.clientY,
-      w
-    );
-
-    // add new ghost entity
-    const ge = getGameEngine();
-    [...Array(10).keys()].forEach(() => {
-      const scale = getRandomInt(5, 20) / 100;
-      const obj = getSpriteEntity(
-        "ghost",
-        scale,
-        scale,
-        realClientXY.realClientX,
-        realClientXY.realClientY
-      );
-      ge.addEntityWithComponent(obj.entity, obj.componentKV);
-    });
   });
 };
 
