@@ -5,8 +5,8 @@ import { BaseEntity } from "./base-entity";
 export class SpriteEntity extends BaseEntity {
   constructor(
     private assetKey: assetsImgKey,
-    private scaleX: number = 0.5,
-    private scaleY: number = 0.5,
+    private scaleX: number = 1,
+    private scaleY: number = 1,
     private positionX: number = 0,
     private positionY: number = 0
   ) {

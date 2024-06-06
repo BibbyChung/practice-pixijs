@@ -12,26 +12,15 @@ export class ContainerEntity extends BaseEntity {
     c.hitArea = new Rectangle(
       0,
       0,
-      this._ge.size.designWitdh,
-      this._ge.size.designHeight
+      this._ge.designWidth,
+      this._ge.designHeight
     );
     c.addEventListener("pointerdown", (event) => {
       const rect = this._ge.RootCanvas.getBoundingClientRect();
-      // console.log(
-      //   event.clientX,
-      //   event.clientX - rect.left,
-      //   this._ge.getRealClientX(event.clientX)
-      // );
-      // console.log(
-      //   event.clientY,
-      //   event.clientY - rect.top,
-      //   this._ge.getRealClientY(event.clientY)
-      // );
-      // console.log("-----");
 
       // add new ghost entity
       [...Array(10).keys()].forEach(() => {
-        const scale = getRandomInt(5, 20) / 100;
+        const scale = getRandomInt(10, 30) / 100;
         const obj = getSpriteEntity(
           "ghost",
           scale,

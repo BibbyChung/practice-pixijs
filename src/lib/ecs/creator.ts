@@ -69,7 +69,7 @@ export const getSpriteEntity = (
 
 export const getTextEntity = () => {
   const entity = new TextEntity("Hello, BB!", {
-    fontSize: 72,
+    fontSize: 154,
     fill: "white",
     align: "center",
     fontFamily: "Jaro Regular",

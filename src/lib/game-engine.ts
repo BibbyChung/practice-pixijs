@@ -27,18 +27,28 @@ class GameEngine {
     return this.pixiApp.canvas;
   }
 
-  size = {
-    designWitdh: 0,
-    designHeight: 0,
-    actualWidth: 0,
-    actualHeight: 0,
-  };
+  private get devicePixelRatio() {
+    return this.pixiApp.canvas.ownerDocument.defaultView?.devicePixelRatio || 1;
+  }
+
+  get designWidth() {
+    return this.pixiApp.canvas.width / devicePixelRatio;
+  }
+  get designHeight() {
+    return this.pixiApp.canvas.height / devicePixelRatio;
+  }
+  get actualWidth() {
+    return this.pixiApp.canvas.offsetWidth;
+  }
+  get actualHeight() {
+    return this.pixiApp.canvas.offsetHeight;
+  }
 
   getRealClientX(x: number) {
-    return (x * this.size.designWitdh) / this.size.actualWidth;
+    return (x * this.designWidth) / this.actualWidth;
   }
   getRealClientY(y: number) {
-    return (y * this.size.designHeight) / this.size.actualHeight;
+    return (y * this.designHeight) / this.actualHeight;
   }
 
   constructor() {
@@ -76,18 +86,8 @@ class GameEngine {
 
 let _gameSystem: GameEngine;
 export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
-  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH;
-  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT;
   await setPixiApp(elem, w);
-  // set actual canvas width/height
-  const canvasElem = elem.querySelector("canvas")!;
   _gameSystem = new GameEngine();
-  _gameSystem.size = {
-    designWitdh: canvasWidth,
-    designHeight: canvasHeight,
-    actualWidth: canvasElem.offsetWidth,
-    actualHeight: canvasElem.offsetHeight,
-  };
   await _gameSystem.initSystems();
   await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
@@ -106,8 +106,8 @@ const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
         {
           x: 0,
           y: 0,
-          width: ge.size.designWitdh,
-          height: ge.size.designHeight,
+          width: ge.designWidth,
+          height: ge.designHeight,
         },
         6,
         3
