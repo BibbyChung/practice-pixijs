@@ -9,6 +9,7 @@ import { MoveComponent } from "./components/move-component";
 import { PlacementComponent } from "./components/placement-component";
 import { RandomColorFillComponent } from "./components/random-color-fill-component";
 import { RotationComponent } from "./components/rotation-component";
+import { BoundsCollisionComponent } from "./components/bounds-collision-compoent";
 import { ContainerEntity } from "./entities/container-entity";
 import { SpriteEntity } from "./entities/sprite-entity";
 import { TextEntity } from "./entities/text-entity";
@@ -58,6 +59,7 @@ export const getSpriteEntity = (
     ),
     moveComponent: new MoveComponent(entity, vX, vY),
     collisionComponent: new CollisionComponent(entity),
+    boundsCollisionComponent: new BoundsCollisionComponent(entity),
     rotationComponent: new RotationComponent(entity),
   });
 

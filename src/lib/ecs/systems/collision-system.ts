@@ -16,6 +16,7 @@ export class CollisionSystem extends BaseSystem {
   execute(): void {
     this.getQuery().subscribe((comp) => {
       const sourceBaseEntity = comp.collisionComponent.entity;
+      const sourcePixiElem = sourceBaseEntity.pixiElem!;
       const sub = getTickerCollisionQTreeLoop()
         .pipe(
           tap(({ delta, qTree }) => {
@@ -25,40 +26,16 @@ export class CollisionSystem extends BaseSystem {
               return;
             }
 
-            const sourcePixiElem = sourceBaseEntity.pixiElem!;
-            const sourceEntityBound = comp.collisionComponent.bounds;
+            const sourceBound = comp.collisionComponent.bounds;
 
             const sourceLeftX =
-              sourcePixiElem.position.x - sourceEntityBound.width / 2;
+              sourcePixiElem.position.x - sourceBound.width / 2;
             const sourceRightX =
-              sourcePixiElem.position.x + sourceEntityBound.width / 2;
+              sourcePixiElem.position.x + sourceBound.width / 2;
             const sourceTopY =
-              sourcePixiElem.position.y - sourceEntityBound.height / 2;
+              sourcePixiElem.position.y - sourceBound.height / 2;
             const sourceBottomY =
-              sourcePixiElem.position.y + sourceEntityBound.height / 2;
-
-            // screen bound collision
-            if (sourceLeftX < 0) {
-              comp.moveComponent.velocityX = Math.abs(
-                comp.moveComponent.velocityX
-              );
-            }
-
-            if (sourceRightX > this._ge.designWidth) {
-              comp.moveComponent.velocityX =
-                Math.abs(comp.moveComponent.velocityX) * -1;
-            }
-
-            if (sourceTopY < 0) {
-              comp.moveComponent.velocityY = Math.abs(
-                comp.moveComponent.velocityY
-              );
-            }
-
-            if (sourceBottomY > this._ge.designHeight) {
-              comp.moveComponent.velocityY =
-                Math.abs(comp.moveComponent.velocityY) * -1;
-            }
+              sourcePixiElem.position.y + sourceBound.height / 2;
 
             // many to many collision
             const targetEntitiesQuery = qTree.retrieve<
@@ -84,7 +61,7 @@ export class CollisionSystem extends BaseSystem {
 
               if (
                 !comp.collisionComponent.isCollision &&
-                isRectangleCollision(sourceEntityBound, targetEntityBound)
+                isRectangleCollision(sourceBound, targetEntityBound)
               ) {
                 // change direction
                 comp.collisionComponent.isCollision = true;
