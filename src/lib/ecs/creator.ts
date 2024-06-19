@@ -13,6 +13,7 @@ import { BoundsCollisionComponent } from "./components/bounds-collision-compoent
 import { ContainerEntity } from "./entities/container-entity";
 import { SpriteEntity } from "./entities/sprite-entity";
 import { TextEntity } from "./entities/text-entity";
+import { DragonEntity } from "./entities/dragon-entity";
 
 export const getRootContainerEntity = () => {
   const entity = new ContainerEntity();
@@ -61,6 +62,34 @@ export const getSpriteEntity = (
     collisionComponent: new CollisionComponent(entity),
     boundsCollisionComponent: new BoundsCollisionComponent(entity),
     rotationComponent: new RotationComponent(entity),
+  });
+
+  return {
+    entity: entity as ComponentType,
+    componentKV,
+  };
+};
+
+export const getDragonEntity = () => {
+  // const ge = getGameEngine();
+  // let newPX = positionX;
+  // let newPY = positionY;
+  // if (positionX === 0 && positionY === 0) {
+  //   newPX = ge.pixiApp.screen.width / 2;
+  //   newPY = ge.pixiApp.screen.height / 2;
+  // }
+
+  const vX = getRandomInt(20, 80) / 10 - 4;
+  const vY = getRandomInt(20, 80) / 10 - 4;
+
+  const entity = new DragonEntity();
+  const componentKV = getComponentKV({
+    createComponent: new CreateComponent(entity),
+    placementComponent: new PlacementComponent(
+      entity,
+      EnumContainerLabel.root,
+      10
+    ),
   });
 
   return {

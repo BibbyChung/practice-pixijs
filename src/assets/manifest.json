@@ -15,6 +15,14 @@
         {
           "alias": "ghost",
           "src": "/images/ghost.{png, webp}"
+        },
+        {
+          "alias": "chinese-dragon",
+          "src": "/images/chinese-dragon.png"
+        },
+        {
+          "alias": "sonic",
+          "src": "/images/sonic.png"
         }
       ]
     },

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import {
+    getDragonEntity,
     getRootContainerEntity,
     getSpriteEntity,
     getTextEntity,
@@ -19,13 +20,16 @@
     const rec = getRootContainerEntity();
     world.addEntityWithComponent(rec.entity, rec.componentKV);
 
-    // 創建一個文字
-    const te = getTextEntity();
-    world.addEntityWithComponent(te.entity, te.componentKV);
+    const de = getDragonEntity();
+    world.addEntityWithComponent(de.entity, de.componentKV);
 
-    // 創建一個 sprite
-    const se = getSpriteEntity("ghost", 0.3, 0.3);
-    world.addEntityWithComponent(se.entity, se.componentKV);
+    // // 創建一個文字
+    // const te = getTextEntity();
+    // world.addEntityWithComponent(te.entity, te.componentKV);
+
+    // // 創建一個 sprite
+    // const se = getSpriteEntity("ghost", 0.3, 0.3);
+    // world.addEntityWithComponent(se.entity, se.componentKV);
   });
 </script>
 
