@@ -23,11 +23,11 @@ class GameEngine {
   get gameScreenAssets() {
     return getGameScreenAssets();
   }
-  get RootCanvas() {
+  get rootCanvas() {
     return this.pixiApp.canvas;
   }
 
-  private get devicePixelRatio() {
+  get devicePixelRatio() {
     return this.pixiApp.canvas.ownerDocument.defaultView?.devicePixelRatio || 1;
   }
 
