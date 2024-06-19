@@ -8,6 +8,7 @@ export enum EnumContainerLabel {
   root = "root",
 }
 
+// getRandomInt(-10,10)
 export const getRandomInt = (lower: number, upper: number): number =>
   Math.floor(Math.random() * (upper - lower + 1)) + lower;
 
