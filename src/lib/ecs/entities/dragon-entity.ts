@@ -1,21 +1,20 @@
-import { Container, Graphics, Rectangle, Sprite } from "pixi.js";
-import type { assetsImgKey } from "../../pixi-assets";
-import { BaseEntity } from "./base-entity";
-import { getRGBA2Hex, getRandomInt, getSubject } from "../../common/utils";
 import { gsap } from "gsap";
+import { Container, Graphics, Rectangle } from "pixi.js";
 import { tap } from "rxjs";
+import { getRGBA2Hex, getRandomInt, getSubject } from "../../common/utils";
+import { BaseEntity } from "./base-entity";
 
 export class DragonEntity extends BaseEntity {
+  private play$ = getSubject<boolean>();
+
   constructor() {
     super();
   }
 
-  private play$ = getSubject<boolean>();
-
   async create(): Promise<void> {
     const c = new Container();
 
-    const { imgHeight, imgWidth, imageData } = this.getImageInfo();
+    const { imgHeight, imgWidth, imageData } = await this.getImageInfo();
     const gap = 6;
     for (let h = 0; h < imgHeight; h += gap) {
       for (let w = 0; w < imgWidth; w += gap) {
@@ -80,7 +79,7 @@ export class DragonEntity extends BaseEntity {
       }
     }
 
-    const resolution = this._ge.devicePixelRatio;
+    const resolution = this._ge.window.devicePixelRatio;
     const actualWidth = imgWidth * resolution;
     const actualHeight = imgHeight * resolution;
     c.pivot.set(actualWidth / 2, actualHeight / 2);
@@ -94,7 +93,7 @@ export class DragonEntity extends BaseEntity {
     c.cursor = "pointer";
     c.eventMode = "static";
     c.hitArea = new Rectangle(0, 0, actualWidth, actualHeight);
-    c.scale.set(0.5, 0.5);
+    c.scale.set(0.8, 0.8);
     c.addEventListener("pointertap", (event) => {
       this.play$.next(true);
     });
@@ -105,8 +104,10 @@ export class DragonEntity extends BaseEntity {
     // this._ge.pixiApp.stage.addChild(ss);
   }
 
-  private getImageInfo() {
-    let canvas = document.createElement("canvas") as HTMLCanvasElement;
+  private async getImageInfo() {
+    let canvas = this._ge.window.document.createElement(
+      "canvas"
+    ) as HTMLCanvasElement;
     let ctx = canvas.getContext("2d");
 
     // const img = new Image();
@@ -120,8 +121,13 @@ export class DragonEntity extends BaseEntity {
     //     resolve("");
     //   };
     // });
-    const texture = this._ge.loadScreenAssets["sonic"];
-    const img = texture.source.resource as ImageBitmap;
+
+    // const texture = this._ge.loadScreenAssets["sonic"];
+    // const img = texture.source.resource as ImageBitmap;
+    const elem = this._ge.window.document.querySelector(
+      "#imgSonic"
+    ) as HTMLImageElement;
+    const img = elem;
 
     canvas.width = img.width;
     canvas.height = img.height;
@@ -132,6 +138,7 @@ export class DragonEntity extends BaseEntity {
 
     let pixel = ctx!.getImageData(0, 0, imgWidth, imgHeight);
     let imageData = pixel.data;
-    return { imgHeight, imgWidth, imageData };
+    const result = { imgHeight, imgWidth, imageData };
+    return result;
   }
 }
