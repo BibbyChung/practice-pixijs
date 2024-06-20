@@ -95,7 +95,7 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   await setPixiApp(elem, w);
   _gameSystem = new GameEngine();
   await _gameSystem.initSystems();
-  // await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
+  await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
 export const getGameEngine = () => {
   return _gameSystem;
