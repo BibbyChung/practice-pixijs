@@ -5,9 +5,9 @@ export class CreateSystem extends BaseSystem {
     return this._ge.miniplexECS.with("createComponent").onEntityAdded;
   }
   execute(): void {
-    this.getQuery().subscribe((comp) => {
+    this.getQuery().subscribe(async (comp) => {
       const entity = comp.createComponent.entity;
-      entity.create();
+      await entity.create();
       this._ge.miniplexECS.removeComponent(comp, "createComponent");
     });
   }
