@@ -27,15 +27,19 @@ class GameEngine {
     return this.pixiApp.canvas;
   }
 
-  get devicePixelRatio() {
-    return this.pixiApp.canvas.ownerDocument.defaultView?.devicePixelRatio || 1;
+  get window() {
+    const ww = this.pixiApp.canvas.ownerDocument.defaultView;
+    if (!ww) {
+      throw new Error("window is not defined");
+    }
+    return ww;
   }
 
   get designWidth() {
-    return this.pixiApp.canvas.width / devicePixelRatio;
+    return this.pixiApp.canvas.width / this.window.devicePixelRatio;
   }
   get designHeight() {
-    return this.pixiApp.canvas.height / devicePixelRatio;
+    return this.pixiApp.canvas.height / this.window.devicePixelRatio;
   }
   get actualWidth() {
     return this.pixiApp.canvas.offsetWidth;
@@ -91,7 +95,7 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   await setPixiApp(elem, w);
   _gameSystem = new GameEngine();
   await _gameSystem.initSystems();
-  await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
+  // await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
 export const getGameEngine = () => {
   return _gameSystem;
