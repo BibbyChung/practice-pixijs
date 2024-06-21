@@ -12,9 +12,9 @@ export class TextEntity extends BaseEntity {
   create(): void | Promise<void> {
     const t = new Text({
       text: this.wording,
-      anchor: { x: 0.5, y: 0.5 },
       style: this.style,
     });
+    t.anchor.set(0.5);
     t.interactive = true;
     t.position.set(
       this._ge.pixiApp.screen.width / 2,
