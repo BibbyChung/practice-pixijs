@@ -100,7 +100,7 @@ export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
   initGlobalKeyboardEvent(w);
   _gameSystem = new GameEngine();
   await _gameSystem.initSystems();
-  await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
+  // await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
 export const getGameEngine = () => {
   return _gameSystem;

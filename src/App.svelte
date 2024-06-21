@@ -5,6 +5,7 @@
     getSpriteEntity,
     getTextEntity,
   } from "./lib/ecs/creator";
+  import ghost from "../public/images/ghost.png";
   import { getGameEngine, initGameEngine } from "./lib/game-engine";
 
   let mainElem: HTMLElement;
@@ -30,6 +31,8 @@
 </script>
 
 <main bind:this={mainElem}></main>
+
+<img id="iiGhost" src={ghost} alt="" style="display: none;" />
 
 <style>
 </style>

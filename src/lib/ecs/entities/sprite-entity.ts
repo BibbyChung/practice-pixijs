@@ -14,7 +14,12 @@ export class SpriteEntity extends BaseEntity {
   }
 
   create(): void | Promise<void> {
-    const sp = Sprite.from(this._ge.loadScreenAssets[this.assetKey]);
+    const img = this._ge.window.document.querySelector(
+      "#iiGhost"
+    ) as HTMLImageElement;
+
+    // const sp = Sprite.from(this._ge.loadScreenAssets[this.assetKey]);
+    const sp = Sprite.from(img);
     this.pixiElem = sp;
     sp.position.set(this.positionX, this.positionY);
     sp.anchor.set(0.5);
