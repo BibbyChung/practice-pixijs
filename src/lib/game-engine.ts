@@ -3,7 +3,7 @@ import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import { map, shareReplay } from "rxjs";
 import manifest from "../assets/manifest.json";
-import { type WindowType } from "./common/utils";
+import { getBehaviorSubject, type WindowType } from "./common/utils";
 import { systemClasses, type ComponentType, type ComponentTypeKV } from "./ecs";
 import { BaseEntity } from "./ecs/entities/base-entity";
 import { getPixiApp, getTickerLoop, setPixiApp } from "./pixi-application";
@@ -35,11 +35,15 @@ class GameEngine {
     return ww;
   }
 
+  get devicePixelRatio() {
+    return getDevicePixelRatio();
+  }
+
   get designWidth() {
-    return this.pixiApp.canvas.width / this.window.devicePixelRatio;
+    return this.pixiApp.canvas.width / this.devicePixelRatio;
   }
   get designHeight() {
-    return this.pixiApp.canvas.height / this.window.devicePixelRatio;
+    return this.pixiApp.canvas.height / this.devicePixelRatio;
   }
   get actualWidth() {
     return this.pixiApp.canvas.offsetWidth;
@@ -92,13 +96,21 @@ class GameEngine {
 
 let _gameSystem: GameEngine;
 export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
-  await setPixiApp(elem, w);
+  await setPixiApp(elem);
+  initGlobalKeyboardEvent(w);
   _gameSystem = new GameEngine();
   await _gameSystem.initSystems();
   // await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
 };
 export const getGameEngine = () => {
   return _gameSystem;
+};
+
+// keyboard
+const initGlobalKeyboardEvent = (w: WindowType) => {
+  w.addEventListener("keydown", (k) => {
+    console.log(k.key);
+  });
 };
 
 // quadtree
@@ -144,3 +156,7 @@ const tickerCollisionQTreeLoop$ = getTickerLoop().pipe(
   shareReplay(1)
 );
 export const getTickerCollisionQTreeLoop = () => tickerCollisionQTreeLoop$;
+
+// others
+const devicePixelRatio$ = getBehaviorSubject(2); //w.devicePixelRatio ?? 1)
+export const getDevicePixelRatio = () => devicePixelRatio$.value;

@@ -1,14 +1,9 @@
 import { Application, Ticker } from "pixi.js";
-import { getSubject, type WindowType } from "./common/utils";
-
-const initGlobalKeyboardEvent = (w: WindowType) => {
-  w.addEventListener("keydown", (k) => {
-    console.log(k.key);
-  });
-};
+import { getSubject } from "./common/utils";
+import { getDevicePixelRatio } from "./game-engine";
 
 let _pixi: Application;
-export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
+export const setPixiApp = (elem: HTMLElement) => {
   const app = new Application();
   const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH;
   const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT;
@@ -18,7 +13,7 @@ export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
       width: canvasWidth,
       height: canvasHeight,
       backgroundColor: 0x061626,
-      resolution: w.devicePixelRatio || 1,
+      resolution: getDevicePixelRatio(),
       antialias: true,
       autoDensity: true,
       // resizeTo: w,
@@ -29,7 +24,6 @@ export const setPixiApp = (elem: HTMLElement, w: WindowType) => {
       app.canvas.classList.add("mainCanvas");
       app.ticker.add((delta) => tickerLoop$.next(delta));
       elem.appendChild(app.canvas);
-      initGlobalKeyboardEvent(w);
     });
 };
 
