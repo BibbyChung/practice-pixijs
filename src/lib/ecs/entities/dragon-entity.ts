@@ -79,9 +79,8 @@ export class DragonEntity extends BaseEntity {
       }
     }
 
-    const resolution = this._ge.window.devicePixelRatio;
-    const actualWidth = imgWidth * resolution;
-    const actualHeight = imgHeight * resolution;
+    const actualWidth = imgWidth * this._ge.devicePixelRatio;
+    const actualHeight = imgHeight * this._ge.devicePixelRatio;
     c.pivot.set(actualWidth / 2, actualHeight / 2);
     this.pixiElem = c;
 
