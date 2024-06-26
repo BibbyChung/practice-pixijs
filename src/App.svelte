@@ -1,6 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import sonic from "../public/images/sonic.png";
+  // import imgUrl from "../public/images/sonic.png";
+  import imgUrl from "../public/images/soldier.png";
+  // import imgUrl from "../public/images/girl.png";
+  // import imgUrl from "../public/images/skull.png";
   import { getDragonEntity, getRootContainerEntity } from "./lib/ecs/creator";
   import { getGameEngine, initGameEngine } from "./lib/game-engine";
 
@@ -23,7 +26,7 @@
 
 <main bind:this={mainElem}></main>
 
-<img id="imgSonic" src={sonic} alt="" style="display: none;" />
+<img id="iiImg" src={imgUrl} alt="" style="display: none;" />
 
 <style>
 </style>

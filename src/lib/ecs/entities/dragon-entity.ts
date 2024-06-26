@@ -1,11 +1,16 @@
 import { gsap } from "gsap";
-import { Container, Graphics, Rectangle } from "pixi.js";
-import { tap } from "rxjs";
-import { getRGBA2Hex, getRandomInt, getSubject } from "../../common/utils";
+import { Container, Graphics } from "pixi.js";
+import { scan } from "rxjs";
+import {
+  getPointerDown,
+  getRGBA2Hex,
+  getRandomInt,
+  type PositionXYType,
+} from "../../common/utils";
 import { BaseEntity } from "./base-entity";
 
 export class DragonEntity extends BaseEntity {
-  private play$ = getSubject<boolean>();
+  private pointerDown$ = getPointerDown();
 
   constructor() {
     super();
@@ -13,9 +18,13 @@ export class DragonEntity extends BaseEntity {
 
   async create(): Promise<void> {
     const c = new Container();
+    this.pixiElem = c;
+
+    const shrink = 4 / 10;
+    const enlarge = 1 / shrink;
 
     const { imgHeight, imgWidth, imageData } = await this.getImageInfo();
-    const gap = 6;
+    const gap = 2;
     for (let h = 0; h < imgHeight; h += gap) {
       for (let w = 0; w < imgWidth; w += gap) {
         const position = (imgWidth * h + w) * 4;
@@ -27,80 +36,76 @@ export class DragonEntity extends BaseEntity {
         if (r + g + b !== 0) {
           const hex = getRGBA2Hex({ r, g, b, a: 1 });
           // const hex = getRGBA2Hex({ r: 255, g: 255, b: 255, a: 1 });
-          const atom = new Graphics().circle(w, h, 4).fill(hex);
-          // const atom = new Graphics().rect(w, h, 6, 6).fill(hex);
+          // const atom = new Graphics().circle(w, h, 4).fill(hex);
+          const atom = new Graphics().rect(w, h, 4, 4).fill(hex);
           atom.pivot.set(atom.width / 2, atom.height / 2);
-          atom.position.set(w, h);
+          atom.position.set(w / 2, h / 2);
           c.addChild(atom);
 
-          // const sObj = { w, h };
-          // const ani = gsap.to(sObj, {
-          //   w: w + getRandomInt(-30, 30),
-          //   h: h + getRandomInt(-30, 30),
-          //   duration: 1,
-          //   repeat: -1,
-          //   yoyo: true,
-          //   ease: "circ.inOut",
-          //   paused: true,
-          //   onUpdate: function () {
-          //     const tObj = this.targets()[0] as typeof sObj;
-          //     circle.position.set(tObj.w, tObj.h);
-          //   },
-          // });
-
-          const sObj = { w, h };
-          const ani = gsap.to(sObj, {
-            w: w + getRandomInt(-60, 60),
-            h: h + getRandomInt(-60, 60),
-            duration: 1,
-            paused: true,
-            ease: "bounce.inOut",
-            onUpdate: function () {
-              const tObj = this.targets()[0] as typeof sObj;
-              atom.position.set(tObj.w, tObj.h);
-            },
-            onComplete: function () {
-              ani.reverse();
-            },
-          });
-
-          this.play$
+          this.pointerDown$
             .pipe(
-              tap(() => {
-                if (ani.isActive()) {
-                  return;
-                }
+              scan(
+                (
+                  pre: {
+                    diff?: PositionXYType;
+                    gsap?: gsap.core.Tween;
+                  },
+                  info
+                ) => {
+                  if (!pre.diff) {
+                    pre.diff = {
+                      x: atom.x * shrink - this._ge.pixiApp.screen.width / 2,
+                      y: atom.y * shrink - this._ge.pixiApp.screen.height / 2,
+                    };
+                  }
 
-                ani.play();
-              })
+                  if (pre.gsap) {
+                    pre.gsap.pause();
+                    pre.gsap.kill();
+                  }
+
+                  const sObj = {
+                    x: atom.x,
+                    y: atom.y,
+                  };
+                  const ani = gsap.to(sObj, {
+                    x: (info.x + pre.diff.x) * enlarge,
+                    y: (info.y + pre.diff.y) * enlarge,
+                    duration: getRandomInt(800, 3300) / 1000,
+                    ease: "elastic.inOut",
+                    paused: true,
+                    // ease: "circ.inOut",
+                    // overflow: "all",
+                    onUpdate: function () {
+                      const tObj = this.targets()[0] as typeof sObj;
+                      atom.position.set(tObj.x, tObj.y);
+                    },
+                    onComplete: function () {
+                      this.kill();
+                    },
+                  });
+                  ani.play();
+
+                  pre.gsap = ani;
+                  return pre;
+                },
+                {}
+              )
             )
             .subscribe();
         }
       }
     }
 
-    const actualWidth = imgWidth * this._ge.devicePixelRatio;
-    const actualHeight = imgHeight * this._ge.devicePixelRatio;
-    c.pivot.set(actualWidth / 2, actualHeight / 2);
-    this.pixiElem = c;
-
+    // c.cursor = "pointer";
+    // c.eventMode = "static";
+    // c.hitArea = new Rectangle(0, 0, c.width, c.width);
+    c.pivot.set(c.width / 2, c.height / 2);
     c.position.set(
       this._ge.pixiApp.screen.width / 2,
       this._ge.pixiApp.screen.height / 2
     );
-
-    c.cursor = "pointer";
-    c.eventMode = "static";
-    c.hitArea = new Rectangle(0, 0, actualWidth, actualHeight);
-    c.scale.set(0.8, 0.8);
-    c.addEventListener("pointertap", (event) => {
-      this.play$.next(true);
-    });
-
-    // for test
-    // const texture = this._ge.loadScreenAssets["sonic"];
-    // const ss = Sprite.from(texture);
-    // this._ge.pixiApp.stage.addChild(ss);
+    c.scale.set(shrink);
   }
 
   private async getImageInfo() {
@@ -124,7 +129,7 @@ export class DragonEntity extends BaseEntity {
     // const texture = this._ge.loadScreenAssets["sonic"];
     // const img = texture.source.resource as ImageBitmap;
     const elem = this._ge.window.document.querySelector(
-      "#imgSonic"
+      "#iiImg"
     ) as HTMLImageElement;
     const img = elem;
 

@@ -85,3 +85,9 @@ export const getConvertRealClientXY = (
     realClientY: (clientY * canvasHeight) / w.innerHeight,
   };
 };
+
+// pointerdown event
+export type PositionXYType = { x: number; y: number };
+const pointerdown$ = getSubject<PositionXYType>();
+export const setPointerDown = (obj: PositionXYType) => pointerdown$.next(obj);
+export const getPointerDown = () => pointerdown$.asObservable();

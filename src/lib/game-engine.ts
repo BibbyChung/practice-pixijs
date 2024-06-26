@@ -3,7 +3,11 @@ import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import { map, shareReplay } from "rxjs";
 import manifest from "../assets/manifest.json";
-import { getBehaviorSubject, type WindowType } from "./common/utils";
+import {
+  getBehaviorSubject,
+  setPointerDown,
+  type WindowType,
+} from "./common/utils";
 import { systemClasses, type ComponentType, type ComponentTypeKV } from "./ecs";
 import { BaseEntity } from "./ecs/entities/base-entity";
 import { getPixiApp, getTickerLoop, setPixiApp } from "./pixi-application";
@@ -110,6 +114,13 @@ export const getGameEngine = () => {
 const initGlobalKeyboardEvent = (w: WindowType) => {
   w.addEventListener("keydown", (k) => {
     console.log(k.key);
+  });
+  w.addEventListener("pointerdown", (event) => {
+    const ge = getGameEngine();
+    setPointerDown({
+      x: ge.getCanvasClientX(event.clientX),
+      y: ge.getCanvasClientY(event.clientY),
+    });
   });
 };
 
