@@ -15,6 +15,10 @@
         {
           "alias": "ghost",
           "src": "/images/ghost.{png, webp}"
+        },
+        {
+          "alias": "fullscreen",
+          "src": "/images/fullscreen.svg"
         }
       ]
     },

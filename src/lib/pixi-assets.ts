@@ -1,6 +1,6 @@
 import { Assets, Texture } from "pixi.js";
 
-export type assetsImgKey = "ghost" | "sonic";
+export type assetsImgKey = "ghost" | "fullscreen";
 
 let _loadScreenAssets: Record<assetsImgKey, Texture>;
 export const getLoadScreenAssets = () => {

@@ -3,7 +3,11 @@ import { World } from "miniplex";
 import { Assets } from "pixi.js";
 import { map, shareReplay } from "rxjs";
 import manifest from "../assets/manifest.json";
-import { getBehaviorSubject, type WindowType } from "./common/utils";
+import {
+  isCurrentFullScreen,
+  requestFullScreen,
+} from "./common/device/toggleFullScreen";
+import { getBehaviorSubject, getWindow } from "./common/utils";
 import { systemClasses, type ComponentType, type ComponentTypeKV } from "./ecs";
 import { BaseEntity } from "./ecs/entities/base-entity";
 import { getPixiApp, getTickerLoop, setPixiApp } from "./pixi-application";
@@ -95,9 +99,9 @@ class GameEngine {
 }
 
 let _gameSystem: GameEngine;
-export const initGameEngine = async (elem: HTMLElement, w: WindowType) => {
+export const initGameEngine = async (elem: HTMLElement) => {
   await setPixiApp(elem);
-  initGlobalKeyboardEvent(w);
+  initGlobalKeyboardEvent();
   _gameSystem = new GameEngine();
   await _gameSystem.initSystems();
   await Promise.all([setLoadScreenAssetsBundle(), setFontsAssetsBundle()]);
@@ -107,9 +111,16 @@ export const getGameEngine = () => {
 };
 
 // keyboard
-const initGlobalKeyboardEvent = (w: WindowType) => {
-  w.addEventListener("keydown", (k) => {
-    console.log(k.key);
+const initGlobalKeyboardEvent = () => {
+  const w = getWindow();
+  w.addEventListener("keydown", (event) => {
+    if (event.key === "l") {
+      if (!isCurrentFullScreen()) {
+        requestFullScreen(w.document.body);
+      } else {
+        w.document.exitFullscreen();
+      }
+    }
   });
 };
 

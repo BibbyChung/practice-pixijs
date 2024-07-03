@@ -13,6 +13,7 @@ import { BoundsCollisionComponent } from "./components/bounds-collision-compoent
 import { ContainerEntity } from "./entities/container-entity";
 import { SpriteEntity } from "./entities/sprite-entity";
 import { TextEntity } from "./entities/text-entity";
+import { FullScreenEntity } from "./entities/fullscreen-entity";
 
 export const getRootContainerEntity = () => {
   const entity = new ContainerEntity();
@@ -84,6 +85,23 @@ export const getTextEntity = () => {
       20
     ),
     randomColorFillComponent: new RandomColorFillComponent(entity),
+  });
+
+  return {
+    entity: entity as ComponentType,
+    componentKV,
+  };
+};
+
+export const getFullScreenEntity = () => {
+  const entity = new FullScreenEntity();
+  const componentKV = getComponentKV({
+    createComponent: new CreateComponent(entity),
+    placementComponent: new PlacementComponent(
+      entity,
+      EnumContainerLabel.none,
+      100
+    ),
   });
 
   return {

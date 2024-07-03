@@ -8,6 +8,21 @@ export enum EnumContainerLabel {
   root = "root",
 }
 
+// rxjs
+export const getSubject = <T>() => new Subject<T>();
+export const getBehaviorSubject = <T>(v: T) => new BehaviorSubject(v);
+
+// window
+const window$ = getBehaviorSubject<WindowType | null>(window ?? null);
+export const setWindow = (w: WindowType) => window$.next(w);
+export const getWindow = () => {
+  const w = window$.value;
+  if (w) {
+    return w;
+  }
+  throw new Error('please set up "window"');
+};
+
 // getRandomInt(-10,10)
 export const getRandomInt = (lower: number, upper: number): number =>
   Math.floor(Math.random() * (upper - lower + 1)) + lower;
@@ -35,10 +50,6 @@ export const isRectangleCollision = (
     box01.y + box01.height > box02.y
   );
 };
-
-// rxjs
-export const getSubject = <T>() => new Subject<T>();
-export const getBehaviorSubject = <T>(v: T) => new BehaviorSubject(v);
 
 // destroy subject
 const destroySub$ = getSubject<Subscription>();
@@ -85,3 +96,20 @@ export const getConvertRealClientXY = (
     realClientY: (clientY * canvasHeight) / w.innerHeight,
   };
 };
+
+// iPhoneFullScreen
+const isIPhoneFullScreen$ = getBehaviorSubject(false);
+export const setIsIPhoneFullScreen = (bo: boolean) =>
+  isIPhoneFullScreen$.next(bo);
+export const getIsIPhoneFullScreen = () => isIPhoneFullScreen$.asObservable();
+
+// iPhoneHideToolbar
+const isIPhoneHideToolbar$ = getBehaviorSubject(false);
+export const setIsIPhoneHideToolbar = (bo: boolean) =>
+  isIPhoneHideToolbar$.next(bo);
+export const getIsIPhoneHideToolbar = () => isIPhoneHideToolbar$.asObservable();
+
+// forceLandscape
+const isForceLandscape$ = getBehaviorSubject(false);
+export const setIsForceLandscape = (bo: boolean) => isForceLandscape$.next(bo);
+export const getIsForceLandscape = () => isForceLandscape$.asObservable();
