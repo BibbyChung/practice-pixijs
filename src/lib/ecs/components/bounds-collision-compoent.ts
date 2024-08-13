@@ -1,19 +1,19 @@
-import { getGameEngine } from "../../game-engine";
-import { BaseComponent } from "./base-component";
+import { getGameEngine } from '../../game-engine'
+import { BaseComponent } from './base-component'
 
 export class BoundsCollisionComponent extends BaseComponent {
-  private _ge = getGameEngine();
+  private _ge = getGameEngine()
 
   get left() {
-    return 0;
+    return 0
   }
   get right() {
-    return this._ge.designWidth;
+    return this._ge.designWidth
   }
   get top() {
-    return 0;
+    return 0
   }
   get bottom() {
-    return this._ge.designHeight;
+    return this._ge.designHeight
   }
 }

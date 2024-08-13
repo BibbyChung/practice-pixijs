@@ -1,5 +1,5 @@
-import { BaseComponent } from "./base-component";
+import { BaseComponent } from './base-component'
 
 export class DestroyComponent extends BaseComponent {
-  isDestroy = false;
+  isDestroy = false
 }

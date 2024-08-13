@@ -1,22 +1,22 @@
-import { getWindow } from "../utils";
+import { getWindow } from '../utils'
 
-const w = getWindow();
+const w = getWindow()
 export function isFullScreenSupport(target: HTMLElement) {
-  return !!target.requestFullscreen;
+  return !!target.requestFullscreen
 }
 
 export async function requestFullScreen(element: HTMLElement) {
-  if (!isFullScreenSupport(element)) return;
+  if (!isFullScreenSupport(element)) return
 
   await element.requestFullscreen({
-    navigationUI: "hide",
-  });
+    navigationUI: 'hide',
+  })
 }
 
 export async function exitFullscreen() {
-  await w.document.exitFullscreen();
+  await w.document.exitFullscreen()
 }
 
 export function isCurrentFullScreen() {
-  return Boolean(w.document.fullscreen || w.document.fullscreenElement);
+  return Boolean(w.document.fullscreen || w.document.fullscreenElement)
 }

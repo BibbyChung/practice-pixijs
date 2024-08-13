@@ -2,10 +2,10 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_CANVAS_WIDTH: string;
-  readonly VITE_CANVAS_HEIGHT: string;
+  readonly VITE_CANVAS_WIDTH: string
+  readonly VITE_CANVAS_HEIGHT: string
 }
 
 interface ImportMeta {
-  readonly env: ImportMetaEnv;
+  readonly env: ImportMetaEnv
 }

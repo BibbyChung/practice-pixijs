@@ -1,12 +1,12 @@
-import { Application, Ticker } from "pixi.js";
-import { getSubject } from "./common/utils";
-import { getDevicePixelRatio } from "./game-engine";
+import { Application, Ticker } from 'pixi.js'
+import { getSubject } from './common/utils'
+import { getDevicePixelRatio } from './game-engine'
 
-let _pixi: Application;
+let _pixi: Application
 export const setPixiApp = (elem: HTMLElement) => {
-  const app = new Application();
-  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH;
-  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT;
+  const app = new Application()
+  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH
+  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT
 
   return app
     .init({
@@ -19,15 +19,15 @@ export const setPixiApp = (elem: HTMLElement) => {
       // resizeTo: w,
     })
     .then(() => {
-      _pixi = app;
-      app.render();
-      app.canvas.classList.add("mainCanvas");
-      app.ticker.add((delta) => tickerLoop$.next(delta));
-      elem.appendChild(app.canvas);
-    });
-};
+      _pixi = app
+      app.render()
+      app.canvas.classList.add('mainCanvas')
+      app.ticker.add((delta) => tickerLoop$.next(delta))
+      elem.appendChild(app.canvas)
+    })
+}
 
-export const getPixiApp = () => _pixi;
+export const getPixiApp = () => _pixi
 
-const tickerLoop$ = getSubject<Ticker>();
-export const getTickerLoop = () => tickerLoop$.asObservable();
+const tickerLoop$ = getSubject<Ticker>()
+export const getTickerLoop = () => tickerLoop$.asObservable()

@@ -1,113 +1,113 @@
 <script lang="ts">
-  import closeBtn from "../../assets/images/iPhone/iphone_close_btn.png";
-  import iPhoneHand from "../../assets/images/iPhone/iphone_hand.png";
-  import iPhoneHeader from "../../assets/images/iPhone/iphone_header.png";
-  import iPhoneMenuHover from "../../assets/images/iPhone/iphone_menu_hover.png";
-  import iPhoneMenuNormal from "../../assets/images/iPhone/iphone_menu_normal.png";
-  import step1 from "../../assets/images/iPhone/iphone_step1.png";
-  import step2 from "../../assets/images/iPhone/iphone_step2.png";
-  import iPhoneWindow from "../../assets/images/iPhone/iphone_window.png";
+  import closeBtn from '../../assets/images/iPhone/iphone_close_btn.png'
+  import iPhoneHand from '../../assets/images/iPhone/iphone_hand.png'
+  import iPhoneHeader from '../../assets/images/iPhone/iphone_header.png'
+  import iPhoneMenuHover from '../../assets/images/iPhone/iphone_menu_hover.png'
+  import iPhoneMenuNormal from '../../assets/images/iPhone/iphone_menu_normal.png'
+  import step1 from '../../assets/images/iPhone/iphone_step1.png'
+  import step2 from '../../assets/images/iPhone/iphone_step2.png'
+  import iPhoneWindow from '../../assets/images/iPhone/iphone_window.png'
 
-  import { gsap } from "gsap";
-  import { debounceTime, fromEvent, switchMap, take, tap } from "rxjs";
-  import { onMount } from "svelte";
-  import { isPortrait } from "../common/device/detecter";
+  import { gsap } from 'gsap'
+  import { debounceTime, fromEvent, switchMap, take, tap } from 'rxjs'
+  import { onMount } from 'svelte'
+  import { isPortrait } from '../common/device/detecter'
   import {
     getBehaviorSubject,
     getSubject,
     getWindow,
     setIsIPhoneHideToolbar,
-  } from "../common/utils";
+  } from '../common/utils'
 
-  const isReady$ = getSubject<boolean>();
-  const playAnim$ = getSubject<boolean>();
-  const isPlayAnimDone$ = getBehaviorSubject(false);
-  const previousHeight$ = getBehaviorSubject(window.innerHeight);
+  const isReady$ = getSubject<boolean>()
+  const playAnim$ = getSubject<boolean>()
+  const isPlayAnimDone$ = getBehaviorSubject(false)
+  const previousHeight$ = getBehaviorSubject(window.innerHeight)
   // const isSelfVisible$ = getBehaviorSubject(true);
 
   const resizeSub = isReady$
     .pipe(
       switchMap(() => {
-        const w = getWindow();
-        return fromEvent(w, "resize");
+        const w = getWindow()
+        return fromEvent(w, 'resize')
       }),
       debounceTime(460),
       tap((event) => {
-        const currentHeight = window.innerHeight;
-        const toolbarHidden = currentHeight > previousHeight$.value;
+        const currentHeight = window.innerHeight
+        const toolbarHidden = currentHeight > previousHeight$.value
 
         if (toolbarHidden) {
-          setIsIPhoneHideToolbar(false);
+          setIsIPhoneHideToolbar(false)
         }
       })
     )
-    .subscribe();
+    .subscribe()
 
   const orientationchangeSub = isReady$
     .pipe(
       switchMap(() => {
-        const w = getWindow();
-        return fromEvent(w, "orientationchange");
+        const w = getWindow()
+        return fromEvent(w, 'orientationchange')
       }),
       debounceTime(460),
       tap((event) => {
-        previousHeight$.next(window.innerHeight);
+        previousHeight$.next(window.innerHeight)
 
         if (!isPortrait()) {
-          playAnim$.next(true);
+          playAnim$.next(true)
         }
       })
     )
-    .subscribe();
+    .subscribe()
 
   const playAniSub = playAnim$
     .pipe(
       take(1),
       tap(() => {
-        const w = getWindow();
+        const w = getWindow()
 
-        const hand = w.document.querySelector(".iphoneHand") as HTMLElement;
-        const menu = w.document.querySelector(".guideMenu") as HTMLElement;
+        const hand = w.document.querySelector('.iphoneHand') as HTMLElement
+        const menu = w.document.querySelector('.guideMenu') as HTMLElement
         // const guideMain = document.querySelector(".guideMain") as HTMLElement;
 
-        const tl = gsap.timeline();
+        const tl = gsap.timeline()
         tl.to(hand, {
-          x: "-353%",
-          y: "-284%",
+          x: '-353%',
+          y: '-284%',
           duration: 1,
           delay: 1,
           onComplete: () => {
-            menu.style.visibility = "visible";
+            menu.style.visibility = 'visible'
           },
         }).to(
           hand,
           {
-            x: "250%",
-            y: "-50%",
+            x: '250%',
+            y: '-50%',
             duration: 1,
             onComplete: () => {
-              isPlayAnimDone$.next(true);
+              isPlayAnimDone$.next(true)
             },
           },
-          "+=0.2"
-        );
+          '+=0.2'
+        )
       })
     )
-    .subscribe();
+    .subscribe()
 
   onMount(() => {
-    isReady$.next(true);
+    isReady$.next(true)
 
     if (!isPortrait()) {
-      playAnim$.next(true);
+      playAnim$.next(true)
     }
 
     return () => {
-      resizeSub.unsubscribe();
-      orientationchangeSub.unsubscribe();
-      playAniSub.unsubscribe();
-    };
-  });
+      resizeSub.unsubscribe()
+      orientationchangeSub.unsubscribe()
+      playAniSub.unsubscribe()
+    }
+  })
 </script>
 
 <div class="guideMain">

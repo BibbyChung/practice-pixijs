@@ -1,28 +1,17 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import scrollImg from "../../assets/images/HANDPOINT.png";
-  import { inIframe, isBarHidden, isPortrait } from "../common/device/detecter";
-  import {
-    getSubject,
-    getWindow,
-    setIsIPhoneFullScreen,
-  } from "../common/utils";
-  import {
-    debounce,
-    debounceTime,
-    fromEvent,
-    merge,
-    switchMap,
-    tap,
-  } from "rxjs";
+  import { onMount } from 'svelte'
+  import scrollImg from '../../assets/images/HANDPOINT.png'
+  import { inIframe, isBarHidden, isPortrait } from '../common/device/detecter'
+  import { getSubject, getWindow, setIsIPhoneFullScreen } from '../common/utils'
+  import { debounce, debounceTime, fromEvent, merge, switchMap, tap } from 'rxjs'
 
-  const isReady$ = getSubject<boolean>();
+  const isReady$ = getSubject<boolean>()
 
-  let holding = false;
+  let holding = false
 
   const triggerMask = () => {
     if (holding) {
-      return;
+      return
     }
 
     // const w = getWindow();
@@ -31,77 +20,77 @@
     // const mask = w.document.querySelector(".mask") as HTMLElement;
 
     if (isPortrait() || isBarHidden()) {
-      setIsIPhoneFullScreen(false);
+      setIsIPhoneFullScreen(false)
       // img.style.visibility = "hidden";
       // mask.style.visibility = "hidden";
 
-      return;
+      return
     }
 
-    setIsIPhoneFullScreen(true);
+    setIsIPhoneFullScreen(true)
     // img.style.visibility = "visible";
     // mask.style.visibility = "visible";
 
-    scrollToTop();
-  };
+    scrollToTop()
+  }
 
-  const scrollToTop = () => window.scrollTo({ top: 0 });
+  const scrollToTop = () => window.scrollTo({ top: 0 })
 
   const maskTouchstartSub = isReady$
     .pipe(
       switchMap(() => {
-        const w = getWindow();
-        const mask = w.document.querySelector(".mask") as HTMLElement;
-        return fromEvent(mask, "touchstart");
+        const w = getWindow()
+        const mask = w.document.querySelector('.mask') as HTMLElement
+        return fromEvent(mask, 'touchstart')
       }),
       tap(() => {
-        holding = true;
+        holding = true
       })
     )
-    .subscribe();
+    .subscribe()
 
   const maskTouchendSub = isReady$
     .pipe(
       switchMap(() => {
-        const w = getWindow();
-        const mask = w.document.querySelector(".mask") as HTMLElement;
-        return fromEvent(mask, "touchend");
+        const w = getWindow()
+        const mask = w.document.querySelector('.mask') as HTMLElement
+        return fromEvent(mask, 'touchend')
       }),
       tap(() => {
-        holding = false;
-        triggerMask();
+        holding = false
+        triggerMask()
       })
     )
-    .subscribe();
+    .subscribe()
 
   const resizeAndOrientationchangeSub = isReady$
     .pipe(
       switchMap(() => {
-        const w = getWindow();
-        return merge(fromEvent(w, "resize"), fromEvent(w, "orientationchange"));
+        const w = getWindow()
+        return merge(fromEvent(w, 'resize'), fromEvent(w, 'orientationchange'))
       }),
       debounceTime(300),
       tap((event) => {
-        triggerMask();
+        triggerMask()
       })
     )
-    .subscribe();
+    .subscribe()
 
   onMount(() => {
-    isReady$.next(true);
+    isReady$.next(true)
     if (inIframe()) {
-      return;
+      return
     }
 
-    scrollToTop();
-    triggerMask();
+    scrollToTop()
+    triggerMask()
 
     return () => {
-      resizeAndOrientationchangeSub.unsubscribe();
-      maskTouchstartSub.unsubscribe();
-      maskTouchendSub.unsubscribe();
-    };
-  });
+      resizeAndOrientationchangeSub.unsubscribe()
+      maskTouchstartSub.unsubscribe()
+      maskTouchendSub.unsubscribe()
+    }
+  })
 </script>
 
 <div class="scroll">

@@ -1,7 +1,7 @@
-import { getGameEngine } from "../../game-engine";
+import { getGameEngine } from '../../game-engine'
 
 export abstract class BaseSystem {
-  protected _ge = getGameEngine();
-  protected abstract getQuery(): unknown;
-  abstract execute(): void;
+  protected _ge = getGameEngine()
+  protected abstract getQuery(): unknown
+  abstract execute(): void
 }

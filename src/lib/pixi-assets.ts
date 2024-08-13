@@ -1,37 +1,31 @@
-import { Assets, Texture } from "pixi.js";
+import { Assets, Texture } from 'pixi.js'
 
-export type assetsImgKey = "ghost" | "fullscreen";
+export type assetsImgKey = 'ghost' | 'fullscreen'
 
-let _loadScreenAssets: Record<assetsImgKey, Texture>;
+let _loadScreenAssets: Record<assetsImgKey, Texture>
 export const getLoadScreenAssets = () => {
   if (!_loadScreenAssets) {
-    throw new Error(
-      'please execute this "setLoadScreenAssetsBundle" method first'
-    );
+    throw new Error('please execute this "setLoadScreenAssetsBundle" method first')
   }
-  return _loadScreenAssets;
-};
+  return _loadScreenAssets
+}
 export const setLoadScreenAssetsBundle = async () => {
-  const textureObj = await Assets.loadBundle("load-screen");
-  _loadScreenAssets = textureObj;
-};
+  const textureObj = await Assets.loadBundle('load-screen')
+  _loadScreenAssets = textureObj
+}
 
-let _gameScreenAssets: Record<string, Texture>;
+let _gameScreenAssets: Record<string, Texture>
 export const getGameScreenAssets = () => {
   if (!_gameScreenAssets) {
-    throw new Error(
-      'please execute this "setGameScreenAssetsBundle" method first'
-    );
+    throw new Error('please execute this "setGameScreenAssetsBundle" method first')
   }
-  return _gameScreenAssets;
-};
-export let setGameScreenAssetsBundle = async (
-  func: (progress: number) => Promise<any>
-) => {
-  const textureObj = await Assets.loadBundle("game-screen", func);
-  return (_gameScreenAssets = textureObj);
-};
+  return _gameScreenAssets
+}
+export let setGameScreenAssetsBundle = async (func: (progress: number) => Promise<any>) => {
+  const textureObj = await Assets.loadBundle('game-screen', func)
+  return (_gameScreenAssets = textureObj)
+}
 
 export const setFontsAssetsBundle = async () => {
-  await Assets.loadBundle("fonts");
-};
+  await Assets.loadBundle('fonts')
+}

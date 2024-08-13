@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import rotateImg from "../../assets/images/rotate.jpg";
+  import { onMount } from 'svelte'
+  import rotateImg from '../../assets/images/rotate.jpg'
 
   onMount(() => {
-    return () => {};
-  });
+    return () => {}
+  })
 </script>
 
 <div class="rotate">
