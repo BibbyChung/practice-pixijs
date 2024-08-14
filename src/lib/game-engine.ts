@@ -5,7 +5,7 @@ import { map, shareReplay } from 'rxjs'
 import manifest from '../assets/manifest.json'
 import { isCurrentFullScreen, requestFullScreen } from './common/device/toggleFullScreen'
 import { getBehaviorSubject, getWindow } from './common/utils'
-import { systemClasses, type ComponentType, type ComponentTypeKV } from './ecs'
+import { systemClasses, type ComponentType, type ComponentTypeKV } from './ecs/_index'
 import { BaseEntity } from './ecs/entities/base-entity'
 import { getPixiApp, getTickerLoop, setPixiApp } from './pixi-application'
 import {

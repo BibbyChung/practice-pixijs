@@ -1,4 +1,4 @@
-import { getComponentKV, type ComponentType } from '.'
+import { getComponentKV, type ComponentType } from './_index'
 import { EnumContainerLabel, getRandomInt } from '../common/utils'
 import { getGameEngine } from '../game-engine'
 import type { assetsImgKey } from '../pixi-assets'

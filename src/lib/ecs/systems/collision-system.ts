@@ -1,6 +1,6 @@
 import type { Rect } from '@timohausmann/quadtree-js'
 import { tap } from 'rxjs'
-import type { ComponentType } from '..'
+import type { ComponentType } from '../_index'
 import { isRectangleCollision, setDestroySub } from '../../common/utils'
 import { getTickerCollisionQTreeLoop } from '../../game-engine'
 import { BaseSystem } from './base-system'

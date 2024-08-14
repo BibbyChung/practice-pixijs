@@ -1,16 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import {
-    getFullScreenEntity,
-    getRootContainerEntity,
-    getSpriteEntity,
-    getTextEntity,
-  } from './lib/ecs/creator'
-  import { getGameEngine, initGameEngine } from './lib/game-engine'
-  import { setWindow } from './lib/common/utils'
   import { tap } from 'rxjs'
-  import { inIframe, isMobile, isSafari, isTablet } from './lib/common/device/detecter'
-  import { isFullScreenSupport } from './lib/common/device/toggleFullScreen'
+  import { onMount } from 'svelte'
+  import { inIframe, isMobile, isSafari, isTablet } from '~/lib/common/device/detecter'
+  import { isFullScreenSupport } from '~/lib/common/device/toggleFullScreen'
   import {
     getBehaviorSubject,
     getIsIPhoneFullScreen,
@@ -19,10 +11,17 @@
     getWindow,
     setIsIPhoneFullScreen,
     setIsIPhoneHideToolbar,
-  } from './lib/common/utils'
-  import ForceLandscape from './lib/components/forceLandscape.svelte'
-  import IPhoneFullScreen from './lib/components/iPhoneFullScreen.svelte'
-  import IPhoneHideToolbar from './lib/components/iPhoneHideToolbar.svelte'
+  } from '~/lib/common/utils'
+  import ForceLandscape from '~/lib/components/forceLandscape.svelte'
+  import IPhoneFullScreen from '~/lib/components/iPhoneFullScreen.svelte'
+  import IPhoneHideToolbar from '~/lib/components/iPhoneHideToolbar.svelte'
+  import {
+    getFullScreenEntity,
+    getRootContainerEntity,
+    getSpriteEntity,
+    getTextEntity,
+  } from '~/lib/ecs/creator'
+  import { getGameEngine, initGameEngine } from '~/lib/game-engine'
 
   let mainElem: HTMLElement
 
@@ -61,15 +60,18 @@
         const world = getGameEngine()
         const rec = getRootContainerEntity()
         world.addEntityWithComponent(rec.entity, rec.componentKV)
-        // 創建一個文字
-        const te = getTextEntity()
-        world.addEntityWithComponent(te.entity, te.componentKV)
-        // 創建一個 sprite
-        const se = getSpriteEntity('ghost', 0.3, 0.3)
-        world.addEntityWithComponent(se.entity, se.componentKV)
 
-        const oo = getFullScreenEntity()
-        world.addEntityWithComponent(oo.entity, oo.componentKV)
+        // create a text entity
+        const textEntity = getTextEntity()
+        world.addEntityWithComponent(textEntity.entity, textEntity.componentKV)
+
+        // create a sprite entity
+        const spriteEntity = getSpriteEntity('ghost', 0.3, 0.3)
+        world.addEntityWithComponent(spriteEntity.entity, spriteEntity.componentKV)
+
+        // create fullscreen entity
+        const fsEntity = getFullScreenEntity()
+        world.addEntityWithComponent(fsEntity.entity, fsEntity.componentKV)
       })
     )
     .subscribe()
