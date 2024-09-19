@@ -8,7 +8,7 @@ export class BoundsCollisionSystem extends BaseSystem {
       .with('boundsCollisionComponent')
       .with('collisionComponent')
       .with('positionComponent')
-      .with('moveComponent')
+      .with('velocityComponent')
   }
   protected getAddedQuery() {
     return this.q.onEntityAdded
@@ -31,19 +31,19 @@ export class BoundsCollisionSystem extends BaseSystem {
 
               // screen bound collision
               if (sourceLeftX < entity.boundsCollisionComponent.left) {
-                entity.moveComponent.velocityX = Math.abs(entity.moveComponent.velocityX)
+                entity.velocityComponent.speed.x = Math.abs(entity.velocityComponent.speed.x)
               }
 
               if (sourceRightX > entity.boundsCollisionComponent.right) {
-                entity.moveComponent.velocityX = Math.abs(entity.moveComponent.velocityX) * -1
+                entity.velocityComponent.speed.x = Math.abs(entity.velocityComponent.speed.x) * -1
               }
 
               if (sourceTopY < entity.boundsCollisionComponent.top) {
-                entity.moveComponent.velocityY = Math.abs(entity.moveComponent.velocityY)
+                entity.velocityComponent.speed.y = Math.abs(entity.velocityComponent.speed.y)
               }
 
               if (sourceBottomY > entity.boundsCollisionComponent.bottom) {
-                entity.moveComponent.velocityY = Math.abs(entity.moveComponent.velocityY) * -1
+                entity.velocityComponent.speed.y = Math.abs(entity.velocityComponent.speed.y) * -1
               }
             })
           )
