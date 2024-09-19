@@ -1,41 +1,47 @@
 import type { Rect } from '@timohausmann/quadtree-js'
 import { tap } from 'rxjs'
-import type { ComponentType } from '../_index'
 import { isRectangleCollision, setDestroySub } from '../../common/utils'
-import { getTickerCollisionQTreeLoop } from '../../game-engine'
+import type { ComponentType } from '../_index'
+import type { BaseEntity } from '../entities/base-entity'
 import { BaseSystem } from './base-system'
 
 export class CollisionSystem extends BaseSystem {
-  protected getQuery() {
-    return this._ge.miniplexECS
+  private get q() {
+    return this.ecs.world
       .without('createComponent')
+      .with('positionComponent')
       .with('moveComponent')
-      .with('collisionComponent').onEntityAdded
+      .with('collisionComponent')
+  }
+  protected getAddedQuery() {
+    return this.q.onEntityAdded
+  }
+  protected getRemovedQuery() {
+    return this.q.onEntityRemoved
   }
 
   execute(): void {
-    this.getQuery().subscribe((comp) => {
-      const sourceBaseEntity = comp.collisionComponent.entity
-      const sourcePixiElem = sourceBaseEntity.pixiElem!
-      const sub = getTickerCollisionQTreeLoop()
+    this.getAddedQuery().subscribe((entity) => {
+      const baseEntity = entity as ComponentType as BaseEntity
+      const sub = this.pixiApp
+        .getTickerCollisionQTreeLoop()
         .pipe(
           tap(({ delta, qTree }) => {
             // check for destruction
-            if (comp.destroyComponent?.isDestroy ?? false) {
+            if (entity.destroyComponent?.isDestroy ?? false) {
               setDestroySub(sub)
               return
             }
 
-            const sourceBound = comp.collisionComponent.bounds
-
-            const sourceLeftX = sourcePixiElem.position.x - sourceBound.width / 2
-            const sourceRightX = sourcePixiElem.position.x + sourceBound.width / 2
-            const sourceTopY = sourcePixiElem.position.y - sourceBound.height / 2
-            const sourceBottomY = sourcePixiElem.position.y + sourceBound.height / 2
+            const sourceBound = entity.collisionComponent.bounds
+            const sourceLeftX = entity.positionComponent.x - sourceBound.width / 2
+            const sourceRightX = entity.positionComponent.x + sourceBound.width / 2
+            const sourceTopY = entity.positionComponent.y - sourceBound.height / 2
+            const sourceBottomY = entity.positionComponent.y + sourceBound.height / 2
 
             // many to many collision
             const targetEntitiesQuery = qTree.retrieve<Rect & { comp: ComponentType }>(
-              comp.collisionComponent.bounds
+              entity.collisionComponent.bounds
             )
             if (targetEntitiesQuery.length === 0) {
               return
@@ -43,8 +49,8 @@ export class CollisionSystem extends BaseSystem {
 
             // console.log(targetEntitiesQuery.length);
             for (const treeEntity of targetEntitiesQuery) {
-              const targetBaseEntity = treeEntity.comp.collisionComponent!.entity
-              if (sourceBaseEntity.ecsEntityId === targetBaseEntity.ecsEntityId) {
+              const targetBaseEntity = treeEntity.comp as ComponentType as BaseEntity
+              if (baseEntity.ecsEntityId === targetBaseEntity.ecsEntityId) {
                 continue
               }
 
@@ -52,11 +58,11 @@ export class CollisionSystem extends BaseSystem {
               const targetEntityBound = treeEntity.comp.collisionComponent!.bounds
 
               if (
-                !comp.collisionComponent.isCollision &&
+                !entity.collisionComponent.isCollision &&
                 isRectangleCollision(sourceBound, targetEntityBound)
               ) {
                 // change direction
-                comp.collisionComponent.isCollision = true
+                entity.collisionComponent.isCollision = true
 
                 const targetLeftX = targetPixiElem.position.x - targetEntityBound.width / 2
                 const targetRightX = targetPixiElem.position.x + targetEntityBound.width / 2
@@ -64,20 +70,20 @@ export class CollisionSystem extends BaseSystem {
                 const targetBottomY = targetPixiElem.position.y + targetEntityBound.height / 2
 
                 if (sourceRightX > targetRightX || sourceRightX < 0) {
-                  comp.moveComponent.velocityX = Math.abs(comp.moveComponent.velocityX)
+                  entity.moveComponent.velocityX = Math.abs(entity.moveComponent.velocityX)
                 }
-                if (sourceLeftX < targetLeftX || sourceLeftX > this._ge.designWidth) {
-                  comp.moveComponent.velocityX = Math.abs(comp.moveComponent.velocityX) * -1
+                if (sourceLeftX < targetLeftX || sourceLeftX > this.pixiApp.app.screen.width) {
+                  entity.moveComponent.velocityX = Math.abs(entity.moveComponent.velocityX) * -1
                 }
 
                 if (sourceBottomY > targetBottomY || sourceBottomY < 0) {
-                  comp.moveComponent.velocityY = Math.abs(comp.moveComponent.velocityY)
+                  entity.moveComponent.velocityY = Math.abs(entity.moveComponent.velocityY)
                 }
-                if (sourceTopY < targetTopY || sourceTopY > this._ge.designHeight) {
-                  comp.moveComponent.velocityY = Math.abs(comp.moveComponent.velocityY) * -1
+                if (sourceTopY < targetTopY || sourceTopY > this.pixiApp.app.screen.height) {
+                  entity.moveComponent.velocityY = Math.abs(entity.moveComponent.velocityY) * -1
                 }
 
-                comp.collisionComponent.isCollision = false
+                entity.collisionComponent.isCollision = false
               }
             }
           })

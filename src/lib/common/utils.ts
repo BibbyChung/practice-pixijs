@@ -3,11 +3,6 @@ import { BehaviorSubject, Subject, tap, type Subscription } from 'rxjs'
 
 export type WindowType = Window & typeof globalThis
 
-export enum EnumContainerLabel {
-  none = 'none',
-  root = 'root',
-}
-
 // rxjs
 export const getSubject = <T>() => new Subject<T>()
 export const getBehaviorSubject = <T>(v: T) => new BehaviorSubject(v)
@@ -102,3 +97,30 @@ export const getIsIPhoneHideToolbar = () => isIPhoneHideToolbar$.asObservable()
 const isForceLandscape$ = getBehaviorSubject(false)
 export const setIsForceLandscape = (bo: boolean) => isForceLandscape$.next(bo)
 export const getIsForceLandscape = () => isForceLandscape$.asObservable()
+
+// retry
+export const sleep = async (ms: number) => {
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, ms)
+  })
+}
+
+export const retryFunc = async (
+  times: number,
+  waitingMillisecond: number,
+  func: (todoCount: number) => boolean | Promise<boolean>,
+  todoCount = 1
+) => {
+  const residue = times - todoCount
+  if (residue < 0) {
+    return
+  }
+  const bo = await func(todoCount)
+  if (bo) {
+    return
+  }
+  await sleep(waitingMillisecond)
+  await retryFunc(times, waitingMillisecond, func, todoCount + 1)
+}

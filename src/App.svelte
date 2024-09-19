@@ -15,15 +15,10 @@
   import ForceLandscape from '~/lib/components/forceLandscape.svelte'
   import IPhoneFullScreen from '~/lib/components/iPhoneFullScreen.svelte'
   import IPhoneHideToolbar from '~/lib/components/iPhoneHideToolbar.svelte'
-  import {
-    getFullScreenEntity,
-    getRootContainerEntity,
-    getSpriteEntity,
-    getTextEntity,
-  } from '~/lib/ecs/creator'
-  import { getGameEngine, initGameEngine } from '~/lib/game-engine'
 
-  let mainElem: HTMLElement
+  export const isSvelteAppReady$ = getBehaviorSubject<HTMLElement | null>(null)
+
+  let gameCanvasElem: HTMLElement
 
   const isReady$ = getSubject<boolean>()
   const isForceLandscape$ = getBehaviorSubject(false)
@@ -53,35 +48,11 @@
     )
     .subscribe()
 
-  const gameInitSub = isReady$
-    .pipe(
-      tap(async () => {
-        await initGameEngine(mainElem)
-        const world = getGameEngine()
-        const rec = getRootContainerEntity()
-        world.addEntityWithComponent(rec.entity, rec.componentKV)
-
-        // create a text entity
-        const textEntity = getTextEntity()
-        world.addEntityWithComponent(textEntity.entity, textEntity.componentKV)
-
-        // create a sprite entity
-        const spriteEntity = getSpriteEntity('ghost', 0.3, 0.3)
-        world.addEntityWithComponent(spriteEntity.entity, spriteEntity.componentKV)
-
-        // create fullscreen entity
-        const fsEntity = getFullScreenEntity()
-        world.addEntityWithComponent(fsEntity.entity, fsEntity.componentKV)
-      })
-    )
-    .subscribe()
-
   onMount(() => {
-    isReady$.next(true)
+    isSvelteAppReady$.next(gameCanvasElem)
 
     return () => {
       deviceDetectorSub.unsubscribe()
-      gameInitSub.unsubscribe()
     }
   })
 </script>
@@ -95,7 +66,7 @@
 {#if $isForceLandscape$}
   <ForceLandscape />
 {/if}
-<main bind:this={mainElem}></main>
+<main bind:this={gameCanvasElem}></main>
 
 <style>
 </style>

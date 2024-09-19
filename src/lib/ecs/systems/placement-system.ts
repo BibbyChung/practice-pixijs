@@ -1,30 +1,42 @@
-import { EnumContainerLabel } from '../../common/utils'
+import type { ComponentType } from '../_index'
+import type { BaseEntity } from '../entities/base-entity'
+import { retryFunc } from './../../common/utils'
 import { BaseSystem } from './base-system'
 
 export class PlacementSystem extends BaseSystem {
-  protected getQuery() {
-    return this._ge.miniplexECS.without('createComponent').with('placementComponent').onEntityAdded
+  private get q() {
+    return this.ecs.world.without('createComponent').with('placementComponent')
+  }
+  protected getAddedQuery() {
+    return this.q.onEntityAdded
+  }
+  protected getRemovedQuery() {
+    return this.q.onEntityRemoved
   }
   execute(): void {
-    this.getQuery().subscribe((comp) => {
-      const entity = comp.placementComponent.entity
-      if (comp.placementComponent.parentLabel === EnumContainerLabel.none) {
-        this._ge.pixiApp.stage.addChild(entity.pixiElem!)
-        entity.pixiElem!.zIndex = comp.placementComponent.zIndex
-        this._ge.pixiApp.stage.sortChildren()
-      }
-
-      if (comp.placementComponent.parentLabel === EnumContainerLabel.root) {
-        const rootContainerComp = this._ge.miniplexECS
-          .with('containerComponent')
-          .where((a) => a.containerComponent.label === EnumContainerLabel.root).first
-
-        if (rootContainerComp) {
-          const rootContainerEntity = rootContainerComp.containerComponent.entity
-          rootContainerEntity.pixiElem!.addChild(entity.pixiElem!)
-          entity.pixiElem!.zIndex = comp.placementComponent.zIndex
-          rootContainerEntity.pixiElem!.sortChildren()
-        }
+    this.getAddedQuery().subscribe((entity) => {
+      const baseEntity = entity as ComponentType as BaseEntity
+      if (entity.placementComponent.parentLabel === 'none') {
+        this.pixiApp.app.stage.addChild(baseEntity.pixiElem!)
+        baseEntity.pixiElem!.zIndex = entity.placementComponent.zIndex
+        this.pixiApp.app.stage.sortChildren()
+      } else {
+        retryFunc(15, 100, () => {
+          const containerEntity = this.ecs.world
+            .without('createComponent')
+            .with('containerComponent')
+            .where(
+              (a) => a.containerComponent.label === entity.placementComponent.parentLabel
+            ).first
+          if (!containerEntity) {
+            return false
+          }
+          const baseContainerEntity = containerEntity as ComponentType as BaseEntity // .containerComponent.entity
+          baseContainerEntity.pixiElem?.addChild(baseEntity.pixiElem!)
+          baseEntity.pixiElem!.zIndex = entity.placementComponent.zIndex
+          baseContainerEntity.pixiElem?.sortChildren()
+          return true
+        })
       }
     })
   }

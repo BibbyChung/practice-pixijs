@@ -1,17 +1,21 @@
 import { BaseSystem } from './base-system'
 
 export class DestroySystem extends BaseSystem {
-  protected getQuery() {
-    return this._ge.miniplexECS.with('destroyComponent').onEntityAdded
+  private get q() {
+    return this.ecs.world.with('destroyComponent')
+  }
+  protected getAddedQuery() {
+    return this.q.onEntityAdded
+  }
+  protected getRemovedQuery() {
+    return this.q.onEntityRemoved
   }
   execute(): void {
-    this.getQuery().subscribe((comp) => {
-      comp.destroyComponent.isDestroy = true
-      this._ge.miniplexECS.remove(comp)
-      const be = comp.destroyComponent.entity
+    this.getAddedQuery().subscribe((entity) => {
+      entity.destroyComponent.isDestroy = true
+      this.ecs.world.remove(entity)
       setTimeout(() => {
-        be.destroy()
-        console.log('destory...')
+        entity.destroyComponent.destroy()
       }, 0)
     })
   }

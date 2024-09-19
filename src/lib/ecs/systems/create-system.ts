@@ -1,14 +1,19 @@
 import { BaseSystem } from './base-system'
 
 export class CreateSystem extends BaseSystem {
-  protected getQuery() {
-    return this._ge.miniplexECS.with('createComponent').onEntityAdded
+  private get q() {
+    return this.ecs.world.with('createComponent')
+  }
+  protected getAddedQuery() {
+    return this.q.onEntityAdded
+  }
+  protected getRemovedQuery() {
+    return this.q.onEntityRemoved
   }
   execute(): void {
-    this.getQuery().subscribe(async (comp) => {
-      const entity = comp.createComponent.entity
-      await entity.create()
-      this._ge.miniplexECS.removeComponent(comp, 'createComponent')
+    this.getAddedQuery().subscribe(async (entity) => {
+      await entity.createComponent.create()
+      this.ecs.removeComponent(entity, 'createComponent')
     })
   }
 }

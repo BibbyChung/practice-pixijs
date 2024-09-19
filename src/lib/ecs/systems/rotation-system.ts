@@ -3,11 +3,18 @@ import { getRandomInt } from '../../common/utils'
 import { BaseSystem } from './base-system'
 
 export class RotationSystem extends BaseSystem {
-  protected getQuery() {
-    return this._ge.miniplexECS.without('createComponent').with('rotationComponent').onEntityAdded
+  private get q() {
+    return this.ecs.world.without('createComponent').with('rotationComponent')
   }
+  protected getAddedQuery() {
+    return this.q.onEntityAdded
+  }
+  protected getRemovedQuery() {
+    return this.q.onEntityRemoved
+  }
+
   execute(): void {
-    this.getQuery().subscribe((comp) => {
+    this.getAddedQuery().subscribe((comp) => {
       const clockwiseRotate = getRandomInt(0, 1) === 1 ? 1 : -1
       const sObj = {
         rotation: comp.rotationComponent.rotation,
@@ -19,8 +26,7 @@ export class RotationSystem extends BaseSystem {
         repeat: -1,
         onUpdate: function () {
           const tObj = this.targets()[0] as typeof sObj
-          // console.log(tObj.rotation);
-          comp.rotationComponent.entity.pixiElem!.rotation = tObj.rotation
+          comp.rotationComponent.rotation = tObj.rotation
         },
       })
     })

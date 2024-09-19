@@ -1,34 +1,37 @@
 import { tap } from 'rxjs'
-import { setDestroySub } from '../../common/utils'
-import { getTickerLoop } from '../../pixi-application'
 import { BaseSystem } from './base-system'
 
 export class MoveSystem extends BaseSystem {
-  protected getQuery() {
-    return this._ge.miniplexECS.without('createComponent').with('moveComponent').onEntityAdded
+  private get q() {
+    return this.ecs.world.without('createComponent').with('positionComponent').with('moveComponent')
   }
+  protected getAddedQuery() {
+    return this.q.onEntityAdded
+  }
+  protected getRemovedQuery() {
+    return this.q.onEntityRemoved
+  }
+
   execute(): void {
-    this.getQuery().subscribe((comp) => {
-      const entity = comp.moveComponent.entity
-      const pixiElem = entity.pixiElem
-      if (pixiElem) {
-        const sub = getTickerLoop()
+    this.getAddedQuery().subscribe((entity) => {
+      this.subs.push(
+        this.pixiApp
+          .getTickerLoop()
           .pipe(
             tap((delta) => {
-              // check for destruction
-              if (comp.destroyComponent?.isDestroy ?? false) {
-                setDestroySub(sub)
-                return
-              }
-
-              const newX = pixiElem.position.x + comp.moveComponent.velocityX * delta.deltaTime
-              const newY = pixiElem.position.y + comp.moveComponent.velocityY * delta.deltaTime
-
-              pixiElem.position.set(newX, newY)
+              const newX =
+                entity.positionComponent.x + entity.moveComponent.velocityX * delta.deltaTime
+              const newY =
+                entity.positionComponent.y + entity.moveComponent.velocityY * delta.deltaTime
+              entity.positionComponent.x = newX
+              entity.positionComponent.y = newY
             })
           )
           .subscribe()
-      }
+      )
+    })
+    this.getRemovedQuery().subscribe((entity) => {
+      this.subs.forEach((item) => item.unsubscribe())
     })
   }
 }
