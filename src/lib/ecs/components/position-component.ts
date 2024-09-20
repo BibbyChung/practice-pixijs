@@ -1,16 +1,19 @@
 import { BaseComponent } from './base-component'
 
 export class PositionComponent extends BaseComponent {
+  private get pixiElem() {
+    return this.entity.pixiElem!
+  }
   get x() {
-    return this.entity.pixiElem?.position.x ?? 0
+    return this.pixiElem.position.x
   }
   set x(v: number) {
-    this.entity.pixiElem!.position.x = v
+    this.pixiElem.position.x = v
   }
   get y() {
-    return this.entity.pixiElem?.position.y ?? 0
+    return this.pixiElem.position.y
   }
   set y(v: number) {
-    this.entity.pixiElem!.position.y = v
+    this.pixiElem.position.y = v
   }
 }

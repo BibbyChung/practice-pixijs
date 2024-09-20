@@ -65,7 +65,7 @@ class LoadingEntity extends BaseEntity {
 
             enterSp.visible = true
             enterSp.eventMode = 'static'
-            enterSp.cursor = 'point'
+            enterSp.cursor = 'pointer'
             enterSp.addListener('pointertap', this.enterClickIt.bind(this))
           })
         )

@@ -1,10 +1,13 @@
 import { BaseComponent } from './base-component'
 
 export class RotationComponent extends BaseComponent {
+  private get pixiElem() {
+    return this.entity.pixiElem!
+  }
   get rotation() {
-    return this.entity.pixiElem?.rotation ?? 0
+    return this.pixiElem.rotation
   }
   set rotation(v: number) {
-    this.entity.pixiElem!.rotation = v
+    this.pixiElem.rotation = v
   }
 }

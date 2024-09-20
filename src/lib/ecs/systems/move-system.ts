@@ -18,8 +18,14 @@ export class MoveSystem extends BaseSystem {
 
   execute(): void {
     this.getAddedQuery().subscribe((entity) => {
-      entity.velocityComponent.speed.x = Math.cos(entity.velocityComponent.velocity) * 5
-      entity.velocityComponent.speed.y = Math.sin(entity.velocityComponent.velocity) * 5
+      // 假设 angle 是物体要移动的方向（以弧度为单位）
+      let angle = Math.atan2(
+        entity.velocityComponent.targetY - entity.positionComponent.y,
+        entity.velocityComponent.targetX - entity.positionComponent.x
+      )
+      // 使用角度计算 x 和 y 的速度分量
+      entity.velocityComponent.speed.x = entity.velocityComponent.velocity * Math.cos(angle)
+      entity.velocityComponent.speed.y = entity.velocityComponent.velocity * Math.sin(angle)
 
       this.subs.push(
         this.pixiApp

@@ -10,9 +10,9 @@ import { CreateComponent } from '../components/create-component'
 import { PlacementComponent } from '../components/placement-component'
 import { PositionComponent } from '../components/position-component'
 import { RotationComponent } from '../components/rotation-component'
+import { VelocityComponent } from '../components/velocity-component'
 import { BaseEntity } from './base-entity'
 import { getGameContainerClickEvent } from './container-entity'
-import { VelocityComponent } from '../components/velocity-component'
 
 class SpriteEntity extends BaseEntity {
   constructor(
@@ -72,17 +72,19 @@ isReady
 const createSpite = (event: FederatedPointerEvent) => {
   const pixiApp = getPixiApp()
   const ecs = getMiniECS()
-  let newPX = pixiApp.getCanvasClientX(event.client.x)
-  let newPY = pixiApp.getCanvasClientY(event.client.y)
-  const scale = getRandomInt(1, 4) / 10
+  const positionX = pixiApp.getCanvasClientX(event.client.x)
+  const positionY = pixiApp.getCanvasClientY(event.client.y)
+  const targetX = getRandomInt(-10000, 10000)
+  const targetY = getRandomInt(-10000, 10000)
+  const scale = getRandomInt(1, 3) / 10
   const v = getRandomInt(20, 80) / 10
 
-  const entity = new SpriteEntity(scale, newPX, newPY)
+  const entity = new SpriteEntity(scale, positionX, positionY)
   const componentKV = getComponentKV({
     createComponent: new CreateComponent(entity),
     placementComponent: new PlacementComponent(entity, 'game', 0),
     positionComponent: new PositionComponent(entity),
-    velocityComponent: new VelocityComponent(entity, v),
+    velocityComponent: new VelocityComponent(entity, v, targetX, targetY),
     collisionComponent: new CollisionComponent(entity),
     boundsCollisionComponent: new BoundsCollisionComponent(entity),
     rotationComponent: new RotationComponent(entity),

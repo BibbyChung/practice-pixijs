@@ -9,7 +9,9 @@ export class VelocityComponent extends BaseComponent {
 
   constructor(
     public entity: BaseEntity,
-    public velocity: number
+    public velocity: number,
+    public targetX: number,
+    public targetY: number
   ) {
     super(entity)
   }
