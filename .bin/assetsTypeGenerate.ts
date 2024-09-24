@@ -87,7 +87,7 @@ export const genAssetsTypeFiles = async () => {
     'gameScreenAssetsType.generate.ts',
     'GameScreenAssetKeys',
     [
-      'public/game/game-screen/**/*.{png,jpg,jpeg,json,svg,ttf}',
+      'public/game/game-screen/**/*.{png,jpg,jpeg,json,svg,ttf,riv}',
       '!public/game/game-screen/spines',
       '!public/game/game-screen/bitmapText',
     ],

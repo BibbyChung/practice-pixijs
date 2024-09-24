@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@qva/pixi-rive':
+    specifier: ^0.0.1
+    version: 0.0.1(pixi.js@8.1.1)
   '@timohausmann/quadtree-js':
     specifier: ^1.2.6
     version: 1.2.6
@@ -435,6 +438,19 @@ packages:
     dependencies:
       pixi.js: 8.1.1
     dev: true
+
+  /@qva/pixi-rive@0.0.1(pixi.js@8.1.1):
+    resolution: {integrity: sha512-h1+0DFPmmT752DZQrVOJEBduEylfox1GG7w2fwu8ulJrgcEnrSf7IL6Hou4ZCgfq/bJlGdXCwWhHlNMVj77DOg==}
+    peerDependencies:
+      pixi.js: '>=7.0.0 || >=8.0.0'
+    dependencies:
+      '@rive-app/webgl-advanced': 2.10.4
+      pixi.js: 8.1.1
+    dev: false
+
+  /@rive-app/webgl-advanced@2.10.4:
+    resolution: {integrity: sha512-qAzvPwUYg3pxFRvSdE1lkJACUi5jVAugFegHu2nvYjOzy2MKbPWN8TdL9v9d1gRv6rrpx4hR5aGzYZmF0Qa6Cg==}
+    dev: false
 
   /@rollup/rollup-android-arm-eabi@4.17.2:
     resolution: {integrity: sha512-NM0jFxY8bB8QLkoKxIQeObCaDlJKewVlIEkuyYKm5An1tdVZ966w2+MPQ2l8LBZLjR+SgyV+nRkTIunzOYBMLQ==}

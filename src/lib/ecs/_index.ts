@@ -43,6 +43,7 @@ export const entities = [
   import('./entities/container-entity'),
   import('./entities/fullscreen-entity'),
   import('./entities/loading-entity'),
+  import('./entities/rive-entity'),
   import('./entities/sprite-entity'),
   import('./entities/text-entity'),
 ]

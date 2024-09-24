@@ -31,6 +31,7 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
+    "@qva/pixi-rive": "^0.0.1",
     "@timohausmann/quadtree-js": "^1.2.6",
     "gh-pages": "^6.1.1",
     "gsap": "^3.12.5",

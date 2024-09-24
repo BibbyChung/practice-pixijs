@@ -82,7 +82,7 @@ const createSpite = (event: FederatedPointerEvent) => {
   const entity = new SpriteEntity(scale, positionX, positionY)
   const componentKV = getComponentKV({
     createComponent: new CreateComponent(entity),
-    placementComponent: new PlacementComponent(entity, 'game', 0),
+    placementComponent: new PlacementComponent(entity, 'game', 10),
     positionComponent: new PositionComponent(entity),
     velocityComponent: new VelocityComponent(entity, v, targetX, targetY),
     collisionComponent: new CollisionComponent(entity),
