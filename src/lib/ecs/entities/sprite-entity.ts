@@ -26,7 +26,7 @@ class SpriteEntity extends BaseEntity {
   create(): void | Promise<void> {
     const assets = this.pixiApp.getGameScreenAssets()
 
-    const sp = Sprite.from(assets['/game/game-screen/ghost'])
+    const sp = Sprite.from(assets['game-screen/ghost.png'])
     this.pixiElem = sp
     sp.position.set(this.positionX, this.positionY)
     sp.anchor.set(0.5)

@@ -17,7 +17,7 @@ class FullScreenEntity extends BaseEntity {
     const c = new Container()
     c.label = 'fullscreen-entity'
 
-    const sp = Sprite.from(assets['/game/game-screen/fullscreen'])
+    const sp = Sprite.from(assets['game-screen/fullscreen.svg'])
     sp.label = 'FullScreenEntity'
     sp.scale.set(0.4)
 
