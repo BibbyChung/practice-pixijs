@@ -12,10 +12,10 @@ import { getLoadingDestory } from './loading-entity'
 class RiveEntity extends BaseEntity {
   create(): void | Promise<void> {
     // const assets = this.pixiApp.getGameScreenAssets();
-    // assets["/game/game-screen/miss_u_optimized"]
+    // assets["game-screen/miss_u_optimized.riv"]
 
     const rs = new RiveSprite({
-      asset: '/game/game-screen/miss_u_optimized',
+      asset: 'game-screen/miss_u_optimized.riv',
       animation: 'Start',
       autoPlay: true,
       debug: true,
