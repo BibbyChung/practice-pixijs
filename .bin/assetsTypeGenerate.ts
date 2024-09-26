@@ -7,6 +7,16 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const projectRootPath = join(__dirname, '../')
 
+const getAliasName = (path: string) => {
+  const p = parse(path)
+  const prefix = p.dir
+    .replace(process.env.BASE ?? '/', '')
+    .split('/')
+    .slice(1)
+    .join('/')
+  return `${join(prefix, p.name)}${p.ext}`
+}
+
 const createScreenType = async (
   fileName: string,
   typeName: string,
@@ -15,16 +25,14 @@ const createScreenType = async (
   const pathsArr = await Promise.all(
     assetsPatten.map(async (assetsPatten) => {
       const paths = await globby(assetsPatten)
-      return paths.map((a) => `/${a.replace('public/', '')}`)
+
+      return paths.map((a) => a.replace('public/', process.env.BASE ?? '/'))
     })
   )
   const assetsPaths = pathsArr.flat()
 
   const assetsFileName = assetsPaths
-    .map((a) => {
-      const p = parse(a)
-      return `'${join(p.dir, p.name)}'`
-    })
+    .map((a) => `'${getAliasName(a)}'`)
     .filter((a, index, arr) => arr.indexOf(a) === index)
     .join(', ')
   const assetsTypeResult = `export const ${typeName} = [
@@ -42,18 +50,18 @@ const createManifestJSON = (
   fileName: string
 ) => {
   const loadScreenInfo = loadAssetsInfo.map((a) => {
-    const p = parse(a)
+    const aliasName = getAliasName(a)
     const obj = {
-      alias: join(p.dir, p.name),
+      alias: aliasName,
       src: a,
     }
     return obj
   })
 
   const gameScreenInfo = gameAssetsInfo.map((a) => {
-    const p = parse(a)
+    const aliasName = getAliasName(a)
     const obj = {
-      alias: join(p.dir, p.name),
+      alias: aliasName,
       src: a,
     }
     return obj

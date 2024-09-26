@@ -1,4 +1,5 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import 'dotenv/config'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, FSWatcher, Plugin } from 'vite'
@@ -35,6 +36,10 @@ export default defineConfig({
     }),
     svelte(),
   ],
+  base: process.env.BASE,
+  // build: {
+  //   sourcemap: true,
+  // },
   resolve: {
     alias: [
       {

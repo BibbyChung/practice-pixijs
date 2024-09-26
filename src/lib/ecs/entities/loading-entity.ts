@@ -12,7 +12,7 @@ class LoadingEntity extends BaseEntity {
     const container = new Container()
 
     const assets = this.pixiApp.getLoadScreenAssets()
-    const bgSp = Sprite.from(assets['/game/load-screen/bg'])
+    const bgSp = Sprite.from(assets['load-screen/bg.png'])
     bgSp.x = 0
     bgSp.y = 0
     bgSp.scale.set(2)
@@ -37,7 +37,7 @@ class LoadingEntity extends BaseEntity {
     loadingText.anchor.set(0.5)
     loadingContainer.addChild(loadingText)
 
-    const enterSp = Sprite.from(assets['/game/load-screen/enter'])
+    const enterSp = Sprite.from(assets['load-screen/enter.png'])
     enterSp.visible = false
     enterSp.position.set(this.pixiApp.app.screen.width / 2, this.pixiApp.app.screen.height / 2)
     enterSp.anchor.set(0.5)
