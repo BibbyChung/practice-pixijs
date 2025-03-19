@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "setup:dev:prepare": "cp -a ./.env.deployment ./.env",
+    "setup:prod:prepare": "cp -a ./.env.production ./.env",
     "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
