@@ -38,7 +38,6 @@ app.isSvelteAppReady$
       // for dev
       const pixiApp = getPixiApp()
       console.log('set up devtools')
-      const app = getPixiApp()
       initDevtools({ app: pixiApp.app })
     })
   )

@@ -19,37 +19,6 @@ export type GameScreenAssetsKeysResourceType = Record<
   Texture //& { spineData: ISkeletonData }
 >
 
-// pixi applciation
-let _pixi: Application
-export const initPixiApp = async (elem: HTMLElement) => {
-  // set up pixi app
-  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH
-  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT
-
-  const app = new Application()
-  await app
-    .init({
-      width: canvasWidth,
-      height: canvasHeight,
-      backgroundColor: 0x061626,
-      resolution: getDevicePixelRatio(),
-      antialias: true,
-      autoDensity: true,
-      // resizeTo: w,
-    })
-    .then(() => {
-      _pixi = app
-      app.render()
-      app.canvas.classList.add('mainCanvas')
-      app.ticker.add((delta) => tickerLoop$.next(delta))
-      elem.appendChild(app.canvas)
-    })
-
-  // initial assets
-  await Assets.init({ manifest })
-  await Promise.all([setLoadScreenAssetsBundle()])
-}
-
 const getDevicePixelRatio = () => 2 //w.devicePixelRatio ?? 1)
 
 const getRootCanvas = () => _pixi.canvas
@@ -144,6 +113,37 @@ const getGameScreenAssets = () => {
 const setGameScreenAssetsBundle = async (func: (progress: number) => void) => {
   const textureObj = await Assets.loadBundle('game-screen', func)
   _gameScreenAssets = textureObj
+}
+
+// pixi applciation
+let _pixi: Application
+export const initPixiApp = async (elem: HTMLElement) => {
+  // set up pixi app
+  const canvasWidth = +import.meta.env.VITE_CANVAS_WIDTH
+  const canvasHeight = +import.meta.env.VITE_CANVAS_HEIGHT
+
+  const app = new Application()
+  await app
+    .init({
+      width: canvasWidth,
+      height: canvasHeight,
+      backgroundColor: 0x061626,
+      resolution: getDevicePixelRatio(),
+      antialias: true,
+      autoDensity: true,
+      // resizeTo: w,
+    })
+    .then(() => {
+      _pixi = app
+      app.render()
+      app.canvas.classList.add('mainCanvas')
+      app.ticker.add((delta) => tickerLoop$.next(delta))
+      elem.appendChild(app.canvas)
+    })
+
+  // initial assets
+  await Assets.init({ manifest })
+  await Promise.all([setLoadScreenAssetsBundle()])
 }
 
 export const getPixiApp = () => ({
