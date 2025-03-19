@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 import { getRGBA2Hex } from '../../common/utils'
-import { getRandomRGBA } from './../../common/utils'
-import { BaseSystem } from './base-system'
+import { getRandomRGBA } from '../../common/utils'
+import { BaseSystem } from './base.system'
 
 export class RandomColorFillSystem extends BaseSystem {
   private get q() {

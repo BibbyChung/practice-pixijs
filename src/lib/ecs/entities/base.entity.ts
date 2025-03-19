@@ -1,6 +1,6 @@
 import type { Container } from 'pixi.js'
 import type { Subscription } from 'rxjs'
-import { getPixiApp } from '../../../lib/services/pixiApp.service'
+import { getPixiApp } from '../../services/pixiApp.service'
 import { getMiniECS } from '../../services/miniECS.service'
 
 export abstract class BaseEntity {

@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { getRandomInt } from '../../common/utils'
-import { BaseSystem } from './base-system'
+import { BaseSystem } from './base.system'
 
 export class RotationSystem extends BaseSystem {
   private get q() {

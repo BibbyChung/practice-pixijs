@@ -3,9 +3,9 @@ import { filter, map, tap } from 'rxjs'
 import { getSubject } from '../../common/utils'
 import { getMiniECS } from '../../services/miniECS.service'
 import { getComponentKV } from '../_index'
-import { CreateComponent } from '../components/create-component'
-import { PlacementComponent } from '../components/placement-component'
-import { BaseEntity } from './base-entity'
+import { CreateComponent } from '../components/create.component'
+import { PlacementComponent } from '../components/placement.component'
+import { BaseEntity } from './base.entity'
 
 class LoadingEntity extends BaseEntity {
   create(): void | Promise<void> {

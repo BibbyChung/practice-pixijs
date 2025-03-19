@@ -1,5 +1,5 @@
 import { tap } from 'rxjs'
-import { BaseSystem } from './base-system'
+import { BaseSystem } from './base.system'
 
 export class BoundsCollisionSystem extends BaseSystem {
   private get q() {

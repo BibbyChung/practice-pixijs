@@ -1,5 +1,5 @@
 import { getPixiApp } from '~/lib/services/pixiApp.service'
-import { BaseComponent } from './base-component'
+import { BaseComponent } from './base.component'
 
 export class BoundsCollisionComponent extends BaseComponent {
   private pixiApp = getPixiApp()

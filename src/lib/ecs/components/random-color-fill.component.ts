@@ -1,6 +1,6 @@
 import type { Text } from 'pixi.js'
-import { getRandomRGBA } from './../../common/utils'
-import { BaseComponent } from './base-component'
+import { getRandomRGBA } from '../../common/utils'
+import { BaseComponent } from './base.component'
 
 const rgba = getRandomRGBA()
 type FillType = typeof rgba

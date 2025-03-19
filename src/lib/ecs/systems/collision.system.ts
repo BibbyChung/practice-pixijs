@@ -2,8 +2,8 @@ import type { Rect } from '@timohausmann/quadtree-js'
 import { tap } from 'rxjs'
 import { isRectangleCollision } from '../../common/utils'
 import type { ComponentType } from '../_index'
-import type { BaseEntity } from '../entities/base-entity'
-import { BaseSystem } from './base-system'
+import type { BaseEntity } from '../entities/base.entity'
+import { BaseSystem } from './base.system'
 
 export class CollisionSystem extends BaseSystem {
   private get q() {

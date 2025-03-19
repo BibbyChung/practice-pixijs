@@ -1,7 +1,7 @@
 import type { ComponentType } from '../_index'
-import type { BaseEntity } from '../entities/base-entity'
-import { retryFunc } from './../../common/utils'
-import { BaseSystem } from './base-system'
+import type { BaseEntity } from '../entities/base.entity'
+import { retryFunc } from '../../common/utils'
+import { BaseSystem } from './base.system'
 
 export class PlacementSystem extends BaseSystem {
   private get q() {

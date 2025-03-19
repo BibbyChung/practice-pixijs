@@ -1,7 +1,7 @@
 import { World } from 'miniplex'
 import { entities, systemClasses, type ComponentType, type ComponentTypeKV } from './_index'
-import { BaseEntity } from './entities/base-entity'
-import type { ContainerLabelType } from './entities/container-entity'
+import { BaseEntity } from './entities/base.entity'
+import type { ContainerLabelType } from './entities/container.entity'
 
 export class MiniPlexECS {
   public world = new World<ComponentType>()

@@ -1,12 +1,12 @@
-import './app.css'
 import { initDevtools } from '@pixi/devtools'
+import './app.css'
 
-import { setWindow } from './lib/common/utils'
+import { delay, filter, of, switchMap, tap } from 'rxjs'
 import App from './App.svelte'
-import { filter, switchMap, of, delay, tap } from 'rxjs'
+import { setWindow } from './lib/common/utils'
+import { setGameAssetsUpdateLoading } from './lib/ecs/entities/loading.entity'
 import { initMiniECS } from './lib/services/miniECS.service'
 import { getPixiApp, initPixiApp } from './lib/services/pixiApp.service'
-import { setGameAssetsUpdateLoading } from './lib/ecs/entities/loading-entity'
 
 const w = window
 setWindow(w)

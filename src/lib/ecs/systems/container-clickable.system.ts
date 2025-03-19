@@ -1,7 +1,7 @@
 import { Rectangle } from 'pixi.js'
 import type { ComponentType } from '../_index'
-import type { BaseEntity } from '../entities/base-entity'
-import { BaseSystem } from './base-system'
+import type { BaseEntity } from '../entities/base.entity'
+import { BaseSystem } from './base.system'
 
 export class ContainerClickableSystem extends BaseSystem {
   private get q() {

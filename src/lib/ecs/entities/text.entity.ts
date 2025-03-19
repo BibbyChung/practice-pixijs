@@ -1,13 +1,13 @@
 import { Container, Text, type TextStyle, type TextStyleOptions } from 'pixi.js'
-import { BaseEntity } from './base-entity'
+import { BaseEntity } from './base.entity'
 import { getRandomRGBA, getSubject } from '~/lib/common/utils'
 import { switchMap, tap } from 'rxjs'
 import { getMiniECS } from '~/lib/services/miniECS.service'
 import { getComponentKV } from '../_index'
-import { CreateComponent } from '../components/create-component'
-import { PlacementComponent } from '../components/placement-component'
-import { getLoadingDestory } from './loading-entity'
-import { RandomColorFillComponent } from '../components/random-color-fill-component'
+import { CreateComponent } from '../components/create.component'
+import { PlacementComponent } from '../components/placement.component'
+import { getLoadingDestory } from './loading.entity'
+import { RandomColorFillComponent } from '../components/random-color-fill.component'
 
 class TextEntity extends BaseEntity {
   constructor(

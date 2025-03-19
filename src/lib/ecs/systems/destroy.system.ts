@@ -1,4 +1,4 @@
-import { BaseSystem } from './base-system'
+import { BaseSystem } from './base.system'
 
 export class DestroySystem extends BaseSystem {
   private get q() {

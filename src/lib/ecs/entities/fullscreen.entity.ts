@@ -4,10 +4,10 @@ import { getMiniECS } from '~/lib/services/miniECS.service'
 import { isCurrentFullScreen, requestFullScreen } from '../../common/device/toggleFullScreen'
 import { getSubject, getWindow } from '../../common/utils'
 import { getComponentKV } from '../_index'
-import { CreateComponent } from '../components/create-component'
-import { PlacementComponent } from '../components/placement-component'
-import { BaseEntity } from './base-entity'
-import { getLoadingDestory } from './loading-entity'
+import { CreateComponent } from '../components/create.component'
+import { PlacementComponent } from '../components/placement.component'
+import { BaseEntity } from './base.entity'
+import { getLoadingDestory } from './loading.entity'
 
 class FullScreenEntity extends BaseEntity {
   create(): void | Promise<void> {

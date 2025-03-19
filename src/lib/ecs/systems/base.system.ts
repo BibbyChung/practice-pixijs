@@ -1,6 +1,6 @@
 import type { Subscription } from 'rxjs'
-import { getMiniECS } from '../../../lib/services/miniECS.service'
-import { getPixiApp } from '../../../lib/services/pixiApp.service'
+import { getMiniECS } from '../../services/miniECS.service'
+import { getPixiApp } from '../../services/pixiApp.service'
 
 export abstract class BaseSystem {
   protected subs: Subscription[] = []
